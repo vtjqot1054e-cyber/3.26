@@ -1,0 +1,106 @@
+[
+  {
+    "id": "B5-A1",
+    "text": "用户的'越挖越深'情绪积累模式：从预期轻量任务开始，每解决一个问题暴露出更大的系统性问题，情绪持续积累直至控制感丧失。总顾问-08中：查2个空文件->WF1去重漏洞->SpecStory双版本->28个重复文件->WF3遗漏->最后还有空文件。行919的4个感叹号('WS3搞了吗？请自查！！！！')是可见的爆发节点。与A4（信息丢失焦虑）有交叠，但本模式的触发机制是'系统持续暴露新漏洞'引发的控制感丧失，而非单纯数据丢失恐惧。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_emotion_pattern,system_frustration,control_loss,snowball_effect",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "18,919,1583",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-A2",
+    "text": "用户在技术排查中是'根因驱动者'：技术假设不总是准确，但'往根走'的方向感是对的。总顾问-08中用户行1333提出'两个窗口'假设（不准确），行1412直接要求查社区（'帮我看看'），直接触发了Issue #196的发现。总顾问若无用户推动，倾向于止步于'找到可行解'（行1325计划在WF1源头掐断）。用户在技术问题上起到了驱动深挖的作用，与A5（基础确认优先）互补：A5是验证前提再推进，本条是推动排查到根因。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_technical_intuition,root_cause_driver,verification_behavior",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "1333,1412",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-B1",
+    "text": "WF1空文件bug根因：去重逻辑中时间戳格式不一致。WF1从对话删除/读排除名时strip后得到'YYYY-MM-DD-HHmmSS-slug'格式，而对话导出coreName是'YYYY-MM-DD_HH-MM-SSZ-slug'格式，匹配失败，WF1认为文件未处理再次生成空文件。修复方案：增加frontmatter title字段作为备用匹配键（title在两边是相同的）。教训：跨目录文件匹配不能只靠文件名，需要有语义层面的匹配键。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_engineering,WF1,dedup_logic,pitfall_solution",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "163-186,848",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-B2",
+    "text": "SpecStory v1.0.0 Bug #196：每个Cursor session生成两个文件——NOSEC版（HH-MMZ，cursor标签，可能截断末尾消息）和SEC版（HH-MM-SSZ，cursoride标签，内容更完整）。官方已知Bug（Issue #196，2026-03-20报告，Open状态）。修复：WF1的SpecStory预清洗节点按session ID分组，只清洗SEC版，跳过NOSEC版。注意：初始判断'NOSEC版质量更好'是基于表象（slug更干净），实际SEC版内容更完整——AI基于表象做判断的典型案例。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_engineering,SpecStory,external_dependency,pitfall_solution",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "1383-1402,1430-1450",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-B3",
+    "text": "管线物理隔离设计：待确认/=用户地盘（WF1写，用户标注，WF3归档），对话引子/=AI地盘（WF1写原文副本，数字真我写引子，SO4.6写报告，用户不碰，WF3不删）。物理隔离保证SO4.6不能看到用户标注，只能看引子+原文副本，确保复盘大脑独立性。WF3对对话引子的处理策略：保留不删（过渡文件）。WF1同时写两份：待确认/[待确认]+对话引子/[引子原文]。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,pipeline_design,physical_isolation,folder_design",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "735-758,982-1082",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-B4",
+    "text": "窗口体系设计原则：窗口数量应基于实际使用频率而非理想设计，提前设计的空窗口增加管理成本不产出价值。正确做法：等数据量/使用频率支撑时再分化，不预设。空窗口三种处理方式：废弃（已被合并或从未有价值）、冻结（有价值但条件不成熟）、待决（需要更多信息）。本轮决策：14+窗口压缩到6活跃+5冻结+5废弃。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,window_system,design_principle",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "528-556",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-C1",
+    "text": "用户原话（行1412）：'那这种情况在社区里面有没有出现？帮我看看'——用户期待AI遇到系统性问题时，不仅找本地修复方案，还应主动查外部文档/社区确认是否为已知问题。AI的自然倾向是'找到可行解就停止'，用户的行为纠正了这个倾向。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_ai_expectation,external_source_check,root_cause_behavior",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "1412",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B5-C2",
+    "text": "用户原话（行800-801）：'工程窗口本质上跟那技术总工做的事一样，如果我们窗口多了反而效率低'——用户明确反对'为规范而增加层级'，要求总顾问直接改WF1代码不走工程窗口。多一层即多一层摩擦，现阶段效率>规范。与窗口体系简化（14+->6）的底层逻辑一致。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_efficiency_priority,anti_bureaucracy,execution_philosophy",
+      "source_file": "[待确认] 2026-03-22_10-07-34Z-总大脑08.md",
+      "line_numbers": "800-801",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  }
+]
