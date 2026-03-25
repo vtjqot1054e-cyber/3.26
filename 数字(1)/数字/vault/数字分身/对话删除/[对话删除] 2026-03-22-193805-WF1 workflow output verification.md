@@ -1,0 +1,66 @@
+---
+type: 对话删除
+source: SpecStory/Cleaned
+date: 2026-03-18
+models:
+  - claude-4.5-sonnet
+turns: 1
+title: WF1 workflow output verification
+original_file: "[导出] 2026-03-18-2206-2026-03-18_13-31Z-wf1-workflow-output-verification.md"
+status: deleted
+archive_title: ""
+replaced_count: 0
+---
+
+# WF1 workflow output verification
+_Cleaned from SpecStory on 2026-03-18_
+
+
+### 👤 用户
+
+你需要在N8N中验证WF1工作流的修复是否正确。
+
+步骤：
+1. 打开 http://localhost:5678
+2. 找到名为 "01-对话清洗标注" 的工作流
+3. 如果工作流是active状态，先把它设为inactive（关掉右上角的开关）
+4. 删除这个工作流
+5. 重新导入工作流：点击左上角菜单或导入按钮，选择从文件导入，文件路径是 D:\数字分身2\N8N\01-对话清洗标注.json
+6. 手动触发工作流运行一次（找到"手动触发"节点或点击"Test workflow"按钮）
+7. 等运行完成后，查看 "SpecStory预清洗" 节点的输出数据
+8. 告诉我以下3个值：cleaned、skipped、processedCount
+9. 如果有errors数组不为空，也告诉我里面的内容
+
+预期结果：cleaned应该是0，skipped应该是55左右，processedCount应该是39左右。
+
+如果cleaned > 0，这是一个严重问题，请立刻告诉我具体数值。
+
+注意：N8N界面可能是英文的，工作流名称是中文的"01-对话清洗标注"。
+
+---
+
+
+### 🤖 Cursor (claude-4.5-sonnet, Agent)
+
+I'll help you verify the WF1 workflow fix in N8N. Let me start by opening the N8N interface.
+
+---
+
+Good, the workflow file exists. Now let me open N8N in the browser.I apologize - I don't have browser automation tools available in this environment. However, I can guide you through the verification process step by step, and I can also analyze the workflow file to verify the fix is correct.
+
+Let me first check the workflow file to confirm the fix is in place:
+
+---
+
+Good! I can see the workflow file contains the fix. Let me verify the key part of the "SpecStory预清洗" node (lines 30-38). The critical fix is in the JavaScript code that builds the `processedSpeNames` set.
+
+Looking at line 31, I can see the fix is correctly implemented:
+
+```javascript
+// 情况1：无前缀的同名文件（刚清洗还没被重命名节点处理）
+if (!ef.startsWith('[')) {
+  processedSpeNames.add(ef);
+}
+// 情况2：已加[导出]前缀 → 从文件名末尾提取SpecStory原始
+
+---

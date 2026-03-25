@@ -1,0 +1,7 @@
+.smart-env/
+vault/.obsidian/copilot-index-*.json
+vault/.obsidian/workspace.json
+vault/knowledge_base/vector_store/
+*.pyc
+__pycache__/
+临时文件/

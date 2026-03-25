@@ -16,7 +16,10 @@
       "name": "定时触发（30分钟）",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1,
-      "position": [240, 200]
+      "position": [
+        240,
+        200
+      ]
     },
     {
       "parameters": {},
@@ -24,73 +27,94 @@
       "name": "手动触发",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
-      "position": [240, 380]
+      "position": [
+        240,
+        380
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const { execSync } = require('child_process');\nconst fs = require('fs');\nconst path = require('path');\n\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst speDir = path.join(vaultPath, '..', '..', '.specstory', 'history');\nconst exportDir = path.join(vaultPath, '对话导出');\nconst scriptPath = path.join(vaultPath, '..', '..', 'N8N', 'scripts', 'specstory_clean.py');\n\nif (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });\n\n// 读取对话导出目录所有md文件\nlet allExportFiles = [];\ntry { allExportFiles = fs.readdirSync(exportDir).filter(f => f.endsWith('.md')); } catch(e) {}\n\n// 把文件名标准化为「不带秒数」的版本，用于去重比对\n// 2026-03-17_06-00-54Z-xxx.md → 2026-03-17_06-00Z-xxx.md\nfunction normalizeSpeName(name) {\n  return name.replace(/(\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2})-\\d{2}Z/, '$1Z');\n}\n\n// 构建已处理的SpecStory原始文件名集合（防增殖核心逻辑）\n// 统一用「不带秒数」版本存储，避免带秒/不带秒两种格式导致的重复\n// 跨批次去重：同一SPE文件无论被哪个批次处理过，都视为已处理\nlet processedSpeNames = new Set();\nfor (const ef of allExportFiles) {\n  // 情况1：无前缀的同名文件（刚清洗还没被重命名节点处理）\n  if (!ef.startsWith('[')) {\n    processedSpeNames.add(normalizeSpeName(ef));\n  }\n  // 情况2：已加[导出]前缀 → 从文件名里提取SPE原始文件名\n  // 兼容带秒（_HH-mm-ssZ）和不带秒（_HH-mmZ）两种格式\n  // [导出] 2026-03-18-2123-2026-03-11_14-50-19Z-xxx.md → 2026-03-11_14-50Z-xxx.md\n  // [导出] 2026-03-18-2123-2026-03-11_14-50Z-xxx.md   → 2026-03-11_14-50Z-xxx.md\n  // 注意：批次时间戳（YYYY-MM-DD-HHMM）不同但SPE核心名相同 = 同一对话，跳过\n  const m = ef.match(/^\\[导出\\]\\s*\\d{4}-\\d{2}-\\d{2}-\\d{4}-(\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}(?:-\\d{2})?Z-.+\\.md)$/);\n  if (m) {\n    processedSpeNames.add(normalizeSpeName(m[1]));\n  }\n}\n\nconst speFiles = fs.readdirSync(speDir).filter(f => f.endsWith('.md'));\nlet cleaned = 0;\nlet skipped = 0;\nlet errors = [];\n\nfor (const f of speFiles) {\n  // 用normalize后的名字比对（兼容带秒/不带秒两种格式）\n  if (processedSpeNames.has(normalizeSpeName(f))) { skipped++; continue; }\n\n  const inputPath = path.join(speDir, f);\n  const outputPath = path.join(exportDir, f);\n\n  try {\n    execSync('python \"' + scriptPath + '\" \"' + inputPath + '\" \"' + outputPath + '\"', {\n      encoding: 'utf-8',\n      timeout: 30000\n    });\n    cleaned++;\n  } catch(e) {\n    errors.push(f + ': ' + String(e).slice(0, 100));\n  }\n}\n\nreturn { json: { cleaned: cleaned, skipped: skipped, errors: errors, processedCount: processedSpeNames.size } };",
+        "jsCode": "const { execSync } = require('child_process');\nconst fs = require('fs');\nconst path = require('path');\n\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst speDir = 'E:\\\\数字\\\\.specstory\\\\history';\nconst exportDir = path.join(vaultPath, '对话导出');\nconst scriptPath = path.join(vaultPath, '..', '..', 'N8N', 'scripts', 'specstory_clean.py');\n\nif (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });\n\n// 读取对话导出目录所有md文件\nlet allExportFiles = [];\ntry { allExportFiles = fs.readdirSync(exportDir).filter(f => f.endsWith('.md')); } catch(e) {}\n\n// 把文件名标准化为「不带秒数」的版本，用于去重比对\n// 2026-03-17_06-00-54Z-xxx.md → 2026-03-17_06-00Z-xxx.md\nfunction normalizeSpeName(name) {\n  return name.replace(/(\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2})-\\d{2}Z/, '$1Z');\n}\n\n// 构建已处理的SpecStory原始文件名集合（防增殖核心逻辑）\n// 统一用「不带秒数」版本存储，避免带秒/不带秒两种格式导致的重复\n// 跨批次去重：同一SPE文件无论被哪个批次处理过，都视为已处理\nlet processedSpeNames = new Set();\nfor (const ef of allExportFiles) {\n  // 情况1：无前缀的同名文件（刚清洗还没被重命名节点处理）\n  if (!ef.startsWith('[')) {\n    processedSpeNames.add(normalizeSpeName(ef));\n  }\n  // 情况2：已加[导出]前缀 → 从文件名里提取SPE原始文件名\n  // 兼容带秒（_HH-mm-ssZ）和不带秒（_HH-mmZ）两种格式\n  // [导出] 2026-03-18-2123-2026-03-11_14-50-19Z-xxx.md → 2026-03-11_14-50Z-xxx.md\n  // [导出] 2026-03-18-2123-2026-03-11_14-50Z-xxx.md   → 2026-03-11_14-50Z-xxx.md\n  // 注意：批次时间戳（YYYY-MM-DD-HHMM）不同但SPE核心名相同 = 同一对话，跳过\n  const m = ef.match(/^\\[导出\\]\\s*\\d{4}-\\d{2}-\\d{2}-\\d{4}-(\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}(?:-\\d{2})?Z-.+\\.md)$/);\n  if (m) {\n    processedSpeNames.add(normalizeSpeName(m[1]));\n  }\n}\n\nconst speFiles = fs.readdirSync(speDir).filter(f => f.endsWith('.md'));\nlet cleaned = 0;\nlet skipped = 0;\nlet errors = [];\n\n// 额外扫描：待确认+可能重复+对话删除目录，提取SPE原始文件名加入已处理集合\n// 防止同一对话的 File A / File B 因标题slug不同而漏过去重\nconst extraDirs = ['待确认', '可能重复', '对话删除'];\nfor (const dirName of extraDirs) {\n  const dirPath = path.join(vaultPath, dirName);\n  let dirFiles = [];\n  try { dirFiles = fs.readdirSync(dirPath).filter(f => f.endsWith('.md')); } catch(e) {}\n  for (const df of dirFiles) {\n    // 去掉 [待确认] / [可能重复] 等前缀\n    const coreName = df.replace(/^\\[.*?\\]\\s*/, '');\n    processedSpeNames.add(normalizeSpeName(coreName));\n  }\n}\n\n// 源头过滤：只处理 File A（不带秒），跳过 File B（带秒）\nconst fileBPattern = /^\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2}Z/;\nconst filteredSpeFiles = speFiles.filter(f => !fileBPattern.test(f));\nlet filteredOut = speFiles.length - filteredSpeFiles.length;\n\nfor (const f of filteredSpeFiles) {\n  // 用normalize后的名字比对（兼容带秒/不带秒两种格式）\n  if (processedSpeNames.has(normalizeSpeName(f))) { skipped++; continue; }\n\n  const inputPath = path.join(speDir, f);\n  const outputPath = path.join(exportDir, f);\n\n  try {\n    execSync('python \"' + scriptPath + '\" \"' + inputPath + '\" \"' + outputPath + '\"', {\n      encoding: 'utf-8',\n      timeout: 30000\n    });\n    cleaned++;\n  } catch(e) {\n    errors.push(f + ': ' + String(e).slice(0, 100));\n  }\n}\n\nreturn { json: { cleaned: cleaned, skipped: skipped, filteredFileB: filteredOut, errors: errors, processedCount: processedSpeNames.size } };",
         "mode": "runOnceForAllItems"
       },
       "id": "specstory-preclean",
       "name": "SpecStory预清洗",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [360, 290]
+      "position": [
+        360,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "// 改动2：重命名导出文件（原节点不变，加[导出]前缀）\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst exportDir = path.join(vaultPath, '对话导出');\nif (!fs.existsSync(exportDir)) { return { json: { renamed: 0 } }; }\nconst files = fs.readdirSync(exportDir);\nlet renamed = 0;\nfor (const f of files) {\n  if (!f.endsWith('.md') || f.startsWith('[导出]')) continue;\n  const filePath = path.join(exportDir, f);\n  const stat = fs.statSync(filePath);\n  const mt = stat.mtime;\n  const y = mt.getFullYear();\n  const mo = String(mt.getMonth() + 1).padStart(2, '0');\n  const d = String(mt.getDate()).padStart(2, '0');\n  const h = String(mt.getHours()).padStart(2, '0');\n  const mi = String(mt.getMinutes()).padStart(2, '0');\n  const dateStr = y + '-' + mo + '-' + d + '-' + h + mi;\n  const newName = '[导出] ' + dateStr + '-' + f;\n  const newPath = path.join(exportDir, newName);\n  if (fs.existsSync(newPath)) continue;\n  fs.renameSync(filePath, newPath);\n  renamed++;\n}\nreturn { json: { renamed: renamed } };",
+        "jsCode": "// 改动2：重命名导出文件（原节点不变，加[导出]前缀）\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst exportDir = path.join(vaultPath, '对话导出');\nif (!fs.existsSync(exportDir)) { return { json: { renamed: 0 } }; }\nconst files = fs.readdirSync(exportDir);\nlet renamed = 0;\nfor (const f of files) {\n  if (!f.endsWith('.md') || f.startsWith('[导出]')) continue;\n  const filePath = path.join(exportDir, f);\n  const stat = fs.statSync(filePath);\n  const mt = stat.mtime;\n  const y = mt.getFullYear();\n  const mo = String(mt.getMonth() + 1).padStart(2, '0');\n  const d = String(mt.getDate()).padStart(2, '0');\n  const h = String(mt.getHours()).padStart(2, '0');\n  const mi = String(mt.getMinutes()).padStart(2, '0');\n  const dateStr = y + '-' + mo + '-' + d + '-' + h + mi;\n  const newName = '[导出] ' + dateStr + '-' + f;\n  const newPath = path.join(exportDir, newName);\n  if (fs.existsSync(newPath)) continue;\n  fs.renameSync(filePath, newPath);\n  renamed++;\n}\nreturn { json: { renamed: renamed } };",
         "mode": "runOnceForAllItems"
       },
       "id": "rename-exports",
       "name": "重命名导出文件",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [480, 290]
+      "position": [
+        480,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst dictPath = path.join(vaultPath, '全局实体字典.md');\nlet content = '';\ntry { content = fs.readFileSync(dictPath, 'utf-8'); } catch(e) { content = ''; }\nreturn { json: { content: content } };",
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst dictPath = path.join(vaultPath, '全局实体字典.md');\nlet content = '';\ntry { content = fs.readFileSync(dictPath, 'utf-8'); } catch(e) { content = ''; }\nreturn { json: { content: content } };",
         "mode": "runOnceForAllItems"
       },
       "id": "read-dict",
       "name": "读取实体字典",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [600, 290]
+      "position": [
+        600,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst exportDir = path.join(vaultPath, '对话导出');\nlet files = [];\ntry { files = fs.readdirSync(exportDir); } catch(e) { return []; }\nconst result = [];\nfor (var i = 0; i < files.length; i++) {\n  var f = files[i];\n  if (!f.endsWith('.md')) continue;\n  var fullPath = path.join(exportDir, f);\n  try {\n    var stat = fs.statSync(fullPath);\n    if (stat.isFile()) {\n      result.push({ json: { name: f, path: path.join('对话导出', f), type: 'file' } });\n    }\n  } catch(e) {}\n}\nreturn result;",
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst exportDir = path.join(vaultPath, '对话导出');\nlet files = [];\ntry { files = fs.readdirSync(exportDir); } catch(e) { return []; }\nconst result = [];\nfor (var i = 0; i < files.length; i++) {\n  var f = files[i];\n  if (!f.endsWith('.md')) continue;\n  var fullPath = path.join(exportDir, f);\n  try {\n    var stat = fs.statSync(fullPath);\n    if (stat.isFile()) {\n      result.push({ json: { name: f, path: path.join('对话导出', f), type: 'file' } });\n    }\n  } catch(e) {}\n}\nreturn result;",
         "mode": "runOnceForAllItems"
       },
       "id": "list-exports",
       "name": "列出对话导出",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [820, 290]
+      "position": [
+        820,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst pendingDir = path.join(vaultPath, '待确认');\nconst deletedDir = path.join(vaultPath, '对话删除');\nif (!fs.existsSync(pendingDir)) { fs.mkdirSync(pendingDir, { recursive: true }); }\nconst result = [];\nfor (const dir of [pendingDir, deletedDir]) {\n  let files = [];\n  try { files = fs.readdirSync(dir); } catch(e) {}\n  for (var i = 0; i < files.length; i++) {\n    var f = files[i];\n    if (!f.endsWith('.md')) continue;\n    result.push({ json: { name: f, type: 'file' } });\n  }\n}\nif (result.length === 0) { result.push({ json: { name: '', type: 'empty' } }); }\nreturn result;",
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst pendingDir = path.join(vaultPath, '待确认');\nconst deletedDir = path.join(vaultPath, '对话删除');\nconst maybeDupDir = path.join(vaultPath, '可能重复');\nif (!fs.existsSync(pendingDir)) { fs.mkdirSync(pendingDir, { recursive: true }); }\nconst result = [];\nfor (const dir of [pendingDir, deletedDir, maybeDupDir]) {\n  let files = [];\n  try { files = fs.readdirSync(dir); } catch(e) {}\n  for (var i = 0; i < files.length; i++) {\n    var f = files[i];\n    if (!f.endsWith('.md')) continue;\n    result.push({ json: { name: f, type: 'file' } });\n  }\n}\nif (result.length === 0) { result.push({ json: { name: '', type: 'empty' } }); }\nreturn result;",
         "mode": "runOnceForAllItems"
       },
       "id": "list-pending",
       "name": "列出待确认",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1040, 290]
+      "position": [
+        1040,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst archiveDir = path.join(vaultPath, '对话存档');\nlet files = [];\ntry { files = fs.readdirSync(archiveDir).filter(f => f.endsWith('.md')); } catch(e) {}\nconst result = [];\nfor (const f of files) {\n  const filePath = path.join(archiveDir, f);\n  let lines = [];\n  try {\n    const content = fs.readFileSync(filePath, 'utf-8');\n    lines = content.split(/\\r?\\n/).slice(0, 15);\n  } catch(e) { continue; }\n  let originalFile = '';\n  for (const line of lines) {\n    const m = line.match(/^original_file:\\s*\"?([^\"\\n]+)\"?/);\n    if (m) { originalFile = m[1].trim(); break; }\n  }\n  if (!originalFile) continue;\n  const coreName = originalFile.replace(/^\\[.*?\\]\\s*/, '');\n  result.push({ json: { name: coreName, type: 'archived' } });\n}\nreturn result;",
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst archiveDir = path.join(vaultPath, '对话存档');\nlet files = [];\ntry { files = fs.readdirSync(archiveDir).filter(f => f.endsWith('.md')); } catch(e) {}\nconst result = [];\nfor (const f of files) {\n  const filePath = path.join(archiveDir, f);\n  let lines = [];\n  try {\n    const content = fs.readFileSync(filePath, 'utf-8');\n    lines = content.split(/\\r?\\n/).slice(0, 15);\n  } catch(e) { continue; }\n  let originalFile = '';\n  for (const line of lines) {\n    const m = line.match(/^original_file:\\s*\"?([^\"\\n]+)\"?/);\n    if (m) { originalFile = m[1].trim(); break; }\n  }\n  if (!originalFile) continue;\n  const coreName = originalFile.replace(/^\\[.*?\\]\\s*/, '');\n  result.push({ json: { name: coreName, type: 'archived' } });\n}\nreturn result;",
         "mode": "runOnceForAllItems"
       },
       "id": "list-archived",
       "name": "列出对话存档",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1160, 290]
+      "position": [
+        1160,
+        290
+      ]
     },
     {
       "parameters": {
@@ -101,18 +125,24 @@
       "name": "过滤未处理",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1380, 290]
+      "position": [
+        1380,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "if (!$json || !$json.path) { return []; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst filePath = path.join(vaultPath, $json.path);\nlet content = '';\nlet fileName = path.basename(filePath);\ntry { content = fs.readFileSync(filePath, 'utf-8'); } catch(e) {\n  return { json: { _skip: true, _error: String(e), name: fileName, content: '' } };\n}\nreturn { json: { content: content, name: fileName, path: $json.path } };",
+        "jsCode": "if (!$json || !$json.path) { return []; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst filePath = path.join(vaultPath, $json.path);\nlet content = '';\nlet fileName = path.basename(filePath);\ntry { content = fs.readFileSync(filePath, 'utf-8'); } catch(e) {\n  return { json: { _skip: true, _error: String(e), name: fileName, content: '' } };\n}\nreturn { json: { content: content, name: fileName, path: $json.path } };",
         "mode": "runOnceForEachItem"
       },
       "id": "read-original",
       "name": "读取原文",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1480, 290]
+      "position": [
+        1480,
+        290
+      ]
     },
     {
       "parameters": {
@@ -123,7 +153,10 @@
       "name": "清洗组装",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1700, 290]
+      "position": [
+        1700,
+        290
+      ]
     },
     {
       "parameters": {
@@ -134,56 +167,158 @@
       "name": "过滤跳过项",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1810, 290]
+      "position": [
+        1810,
+        290
+      ]
     },
     {
       "parameters": {
-        "jsCode": "if (!$json || !$json.outputFileName || !$json.outputContent) { return []; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst pendingDir = path.join(vaultPath, '待确认');\nif (!fs.existsSync(pendingDir)) { fs.mkdirSync(pendingDir, { recursive: true }); }\nconst outputPath = path.join(pendingDir, $json.outputFileName);\nfs.writeFileSync(outputPath, $json.outputContent, 'utf-8');\nreturn { json: { success: true, path: outputPath, fileName: $json.outputFileName } };",
+        "jsCode": "if (!$json || !$json.outputFileName || !$json.outputContent) { return []; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'E:\\\\数字\\\\vault\\\\数字分身';\nconst pendingDir = path.join(vaultPath, '待确认');\nif (!fs.existsSync(pendingDir)) { fs.mkdirSync(pendingDir, { recursive: true }); }\nconst outputPath = path.join(pendingDir, $json.outputFileName);\nfs.writeFileSync(outputPath, $json.outputContent, 'utf-8');\nreturn { json: { success: true, path: outputPath, fileName: $json.outputFileName } };",
         "mode": "runOnceForEachItem"
       },
       "id": "write-pending",
       "name": "写入待确认",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2030, 290]
+      "position": [
+        2030,
+        290
+      ]
     }
   ],
   "connections": {
     "定时触发（30分钟）": {
-      "main": [[{ "node": "SpecStory预清洗", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "SpecStory预清洗",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "手动触发": {
-      "main": [[{ "node": "SpecStory预清洗", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "SpecStory预清洗",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "SpecStory预清洗": {
-      "main": [[{ "node": "重命名导出文件", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "重命名导出文件",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "重命名导出文件": {
-      "main": [[{ "node": "读取实体字典", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "读取实体字典",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "读取实体字典": {
-      "main": [[{ "node": "列出对话导出", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "列出对话导出",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "列出对话导出": {
-      "main": [[{ "node": "列出待确认", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "列出待确认",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "列出待确认": {
-      "main": [[{ "node": "列出对话存档", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "列出对话存档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "列出对话存档": {
-      "main": [[{ "node": "过滤未处理", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "过滤未处理",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "过滤未处理": {
-      "main": [[{ "node": "读取原文", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "读取原文",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "读取原文": {
-      "main": [[{ "node": "清洗组装", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "清洗组装",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "清洗组装": {
-      "main": [[{ "node": "过滤跳过项", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "过滤跳过项",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "过滤跳过项": {
-      "main": [[{ "node": "写入待确认", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "写入待确认",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {

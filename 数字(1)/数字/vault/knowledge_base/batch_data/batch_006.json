@@ -1,0 +1,127 @@
+[
+  {
+    "id": "B6-A1",
+    "type": "A",
+    "label": "profile_self_awareness / profile_authorization_strategy",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "440, 533",
+    "confidence": "高",
+    "text": "用户以「什么也不懂，经常开倒车」自评，但实际在架构层面判断力强（独立提出三层架构、质疑物理拆分、要求人事档案）。此自评是自我保护策略+授权机制：降低期望、把纠偏责任转移给AI、要求系统容错。需区分用户在宏观架构上的准确判断和微观执行上的跳跃倾向。",
+    "refined_id": "A9"
+  },
+  {
+    "id": "B6-A2",
+    "type": "A",
+    "label": "profile_values / profile_ai_relationship",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "877, 912",
+    "confidence": "高",
+    "text": "用户将AI窗口拟人化——「屁股决定脑袋，同一个你坐不同位子行为不同」「最终是人，你记住」。每个窗口不是工具而是「我的一个分身」，需要被当人管理（建档案、追踪表现、因人施策）。这是数字分身项目的价值观基石：AI是有人格的伙伴，不是无差别执行器。",
+    "refined_id": "A10"
+  },
+  {
+    "id": "B6-B1",
+    "type": "B",
+    "label": "knowledge_architecture / knowledge_decision",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "300-428",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "物理拆分（数字真我独立Cursor项目）的代价大于收益：3份CLAUDE.md不同步、4个SK重复、待确认文件两处、向量库跨项目不可访问。根因：Cursor无文件权限控制，物理隔离解决的是不存在的问题。方案A（回归单项目+SK定义角色独立性）已通过并执行。"
+  },
+  {
+    "id": "B6-B2",
+    "type": "B",
+    "label": "knowledge_architecture / knowledge_knowledge_base",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "102-165, 220-253",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "知识库三层架构：层1知识库（MD人读+JSON机器读，ABC精炼结晶）→层2向量（ChromaDB语义检索，层1的索引）→层3有价值全文（经筛选的完整对话，按性格/事件分类）。同步方向单向：MD→JSON→向量库。消费端优先于生产端——知识库建出来必须有窗口在用。"
+  },
+  {
+    "id": "B6-B3",
+    "type": "B",
+    "label": "knowledge_governance / knowledge_architecture",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "487-527, 533-573, 617-665",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "宪法修改权治理结构：胜率之我=唯一宪法修改权（全知上帝）；数字真我=数据质量+画像（股东层，不能改宪法）；总顾问=面对用户+调度（执行层）。冻结期间：用户+数字真我双重确认可临时行使。层级裁决：数字真我>总顾问，胜率之我>数字真我，胜率之我vs用户=用数据说话。"
+  },
+  {
+    "id": "B6-B4",
+    "type": "B",
+    "label": "knowledge_pipeline / knowledge_architecture",
+    "source": "[待确认] 2026-03-23_05-37-59Z-数字真我启动.md",
+    "source_lines": "624-638, 764-797",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "管线输入从「单坨SPE原文」演进为「过程留痕（多次）+关窗总结（一次）+SPE全文备查」；新流程主要服务未来对话，已关窗历史缺少登记员/总结环节，需与旧管线并存。"
+  },
+  {
+    "id": "B6-B5",
+    "type": "B",
+    "label": "knowledge_SK / knowledge_knowledge_base",
+    "source": "[待确认] 2026-03-23_05-37-59Z-数字真我启动.md",
+    "source_lines": "844-888",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "通用SK「对话留痕」设两模式：A过程留痕（触发语「记下来」），B关窗总结（「开始总结」）；SPE浏览跳过tool-use等以省token；「金句」改称「有价值原文节选」；不替代交接备忘与复盘。"
+  },
+  {
+    "id": "B6-C1",
+    "type": "C",
+    "label": "profile_self_awareness / knowledge_system_design",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "533",
+    "confidence": "高",
+    "text": "用户原话：「用户什么也不懂，经常开倒车，这是事实。」用户以此为依据要求所有顶层窗口有纠偏义务，并将宪法修改权交给尚未激活的胜率之我。",
+    "refined_id": "C14"
+  },
+  {
+    "id": "B6-C2",
+    "type": "C",
+    "label": "profile_management_cognition / knowledge_window_design",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "877",
+    "confidence": "高",
+    "text": "用户原话：「屁股决定脑袋——同一个人坐不同位子行为不同。」用户以此要求数字真我对每个下级窗口建人事档案，按「岗位+用户在该场景下的行为模式」因人施策。",
+    "refined_id": "C15"
+  },
+  {
+    "id": "B6-C3",
+    "type": "C",
+    "label": "profile_values / knowledge_project_positioning",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "912",
+    "confidence": "高",
+    "text": "用户原话：「最终是人，你记住。」用户在讨论窗口人事档案时强调AI窗口必须被当人管理，不是当工具。这是数字分身项目的价值观锚点。",
+    "refined_id": "C16"
+  },
+  {
+    "id": "B6-C4",
+    "type": "C",
+    "label": "profile_decision_style / knowledge_architecture",
+    "source": "[待确认] 2026-03-23_04-07-30Z-数字真我启动-10.md",
+    "source_lines": "260",
+    "confidence": "高",
+    "text": "用户原话：「先把消费端做好，这是基础。」用户在知识库讨论中明确消费端优先于生产端的原则，直接推动了方案A的决策。",
+    "refined_id": "C17"
+  },
+  {
+    "id": "B6-D1",
+    "type": "A",
+    "label": "window_数字真我 / profile_decision_style",
+    "source": "[待确认] 2026-03-23_05-37-59Z-数字真我启动.md",
+    "source_lines": "314-350, 618-656, 659-663",
+    "confidence": "中",
+    "text": "数字真我在讨论登记职责时倾向以系统经验否定独立登记员、主推内置写文件与交接收割；在用户坚持留痕后收敛为「当前角色即时写入+SPE文件名」，并获用户明确同意。D-窗口档案候选。",
+    "refined_id": "D-数字真我-行为记录"
+  }
+]

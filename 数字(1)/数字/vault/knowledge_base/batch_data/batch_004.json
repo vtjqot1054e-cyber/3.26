@@ -1,0 +1,67 @@
+[
+  {
+    "id": "B4-A1",
+    "text": "用户对AI角色有明确的期望模型：AI应该是能主动打断、提供视角、充当导师的对等对话者，不是接收指令的执行工具。用户原话：'太需要1个冷静的AI来打断了，上帝视角是我反复强调的，由于AI的机制，他并不像1个好的导师来辅导我，变成了一个执行命令的工具，这个可能与本项目的定义有本质的分歧'。这个期望和实际AI机制（AI倾向于执行明确指令）之间有结构性张力。注意：这不是对某个具体AI窗口的批评，是对AI系统性行为模式的判断。跨篇多次出现（用户反复提'上帝视角'），已从用户心声转化为系统设计原则（宪法条款）。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_ai_expectation,mentor_vs_tool,role_expectation",
+      "source_file": "2026-03-22_09-59-51Z-comprehensive-analysis-of待入库.md.md",
+      "line_numbers": "689",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B4-B1",
+    "text": "A类画像条目存在'追踪表有编号但精炼文本未写入'的风险状态。数字真我-08发现A4/A5/A6在交接备忘追踪表有记录但待入库.md无对应精炼文本。这种'有号无内容'的状态会造成画像档案名存实亡——工具看到了编号，没有内容可以读取。防范措施：每次在追踪表新增条目编号时，必须同步检查精炼文本是否已在对应文件中存在；如果没有，先写精炼文本再建编号。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_data_quality,tracking_table_gap,pitfall_solution",
+      "source_file": "2026-03-22_09-59-51Z-comprehensive-analysis-of待入库.md.md",
+      "line_numbers": "240-244",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B4-B2",
+    "text": "'当前唯一任务是跑量'作为延迟处理系统缺口的理由，是一个需要监控的判断模式。数字真我-08发现审计意见落盘机制缺失后，以跑量优先为由推迟，但在用户要求后立刻执行。这说明'跑量优先'更多是一个等待用户授权的机制，而不是真正的优先级排序。如果AI发现流程缺口但等待用户授权才处理，而用户没有主动追问，缺口会一直停在'记录'状态。建议：发现缺口时明确说'我现在不做，但你下一轮窗口应该处理这个'，给用户主动决策的机会。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_process,deferred_fix_trap,prioritization",
+      "source_file": "2026-03-22_09-59-51Z-comprehensive-analysis-of待入库.md.md",
+      "line_numbers": "338-355",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B4-B3",
+    "text": "方法论类内容在系统迭代后需要重新评估独立价值。'判断文件区段知识价值.md'是一篇用户给AI判断B类价值的方法论样本，但其方法已被管线v8（用户写总结->引子->独立分析）覆盖，所以cancelled而非入库。通用原则：精炼候选中如果内容是'怎么做某件事的方法'，需要检查这个方法是否已被当前管线中的机制替代。替代了->cancelled；未替代->正常入库。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_process,content_deprecation_rule,method_obsolescence",
+      "source_file": "2026-03-22_09-59-51Z-comprehensive-analysis-of待入库.md.md",
+      "line_numbers": "670-684",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B4-C1",
+    "text": "用户原话：'我的理想化架构如删除线这些东西，可能是工作方式有些问题，太需要1个冷静的AI来打断了，上帝视角是我反复强调的，由于AI的机制，他并不像1个好的导师来辅导我，变成了一个执行命令的工具，这个可能与本项目的定义有本质的分歧'——用户对AI系统性行为模式的判断：期望导师型对等对话者，现实是执行工具。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_ai_expectation,user_verbatim,mentor_vs_tool",
+      "source_file": "2026-03-22_09-59-51Z-comprehensive-analysis-of待入库.md.md",
+      "line_numbers": "689",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  }
+]

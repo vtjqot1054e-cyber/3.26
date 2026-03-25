@@ -1,0 +1,287 @@
+{
+  "name": "02-用户校对提炼",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger-2",
+      "name": "手动触发",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst pendingDir = path.join(vaultPath, '\\u5f85\\u786e\\u8ba4');\nif (!fs.existsSync(pendingDir)) { fs.mkdirSync(pendingDir, { recursive: true }); }\nlet files = [];\ntry { files = fs.readdirSync(pendingDir); } catch(e) { return []; }\nconst result = [];\nfor (var i = 0; i < files.length; i++) {\n  var f = files[i];\n  if (!f.endsWith('.md')) continue;\n  var filePath = path.join(pendingDir, f);\n  var content = '';\n  try { content = fs.readFileSync(filePath, 'utf-8'); } catch(e) { continue; }\n  var fmMatch = content.match(/^---\\n([\\s\\S]*?)\\n---/);\n  var frontmatter = fmMatch ? fmMatch[1] : '';\n  var isDone = /status:\\s*done/i.test(frontmatter) || /status:\\s*\\n\\s*-\\s*done/i.test(frontmatter);\n  if (!isDone) continue;\n  var origMatch = frontmatter.match(/original_file:\\s*\"?([^\"\\n]+)\"?/);\n  var originalFile = origMatch ? origMatch[1].trim() : '';\n  result.push({ json: { name: f, path: path.join('\\u5f85\\u786e\\u8ba4', f).replace(/\\\\/g, '/'), type: 'file', originalFile: originalFile } });\n}\nreturn result;",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "list-pending-2",
+      "name": "列出待确认",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst archiveDir = path.join(vaultPath, '\\u5bf9\\u8bdd\\u5b58\\u6863');\nif (!fs.existsSync(archiveDir)) { fs.mkdirSync(archiveDir, { recursive: true }); }\nlet files = [];\ntry { files = fs.readdirSync(archiveDir); } catch(e) { return []; }\nconst result = [];\nfor (var i = 0; i < files.length; i++) {\n  var f = files[i];\n  if (!f.endsWith('.md')) continue;\n  result.push({ json: { name: f, type: 'file' } });\n}\nreturn result;",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "list-archive-2",
+      "name": "列出对话存档",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$input || !$input.all()) { return []; }\nvar archiveItems = $input.all();\nvar archiveCoreNames = {};\nfor (var i = 0; i < archiveItems.length; i++) {\n  var n = String(archiveItems[i].json.name || '');\n  var core = n.replace(/^\\[.*?\\]\\s*/, '');\n  if (core.endsWith('.md')) archiveCoreNames[core] = true;\n}\nvar pendingItems = $('\\u5217\\u51fa\\u5f85\\u786e\\u8ba4').all();\nif (!pendingItems || pendingItems.length === 0) { return []; }\nvar result = [];\nfor (var j = 0; j < pendingItems.length; j++) {\n  var item = pendingItems[j];\n  var name = String(item.json.name || '');\n  var type = String(item.json.type || '');\n  if (type !== 'file' || !name.endsWith('.md')) continue;\n  var origFile = String(item.json.originalFile || '');\n  var originalFileName;\n  var originalPath;\n  if (origFile) {\n    originalFileName = origFile.replace(/^\\[.*?\\]\\s*/, '');\n    originalPath = '\\u5bf9\\u8bdd\\u5bfc\\u51fa/' + origFile;\n  } else {\n    var baseName = name.replace(/^\\[.*?\\]\\s*/, '');\n    originalFileName = baseName;\n    originalPath = '\\u5bf9\\u8bdd\\u5bfc\\u51fa/' + baseName;\n  }\n  if (!originalFileName) continue;\n  if (archiveCoreNames[originalFileName]) continue;\n  result.push({\n    json: {\n      pendingName: name,\n      pendingPath: String(item.json.path || ''),\n      originalFileName: originalFileName,\n      originalPath: originalPath\n    }\n  });\n}\nreturn result;",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "filter-pending",
+      "name": "过滤待处理",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$json || !$json.pendingPath) { return { json: { _skip: true } }; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst filePath = path.join(vaultPath, $json.pendingPath);\nlet content = '';\ntry { content = fs.readFileSync(filePath, 'utf-8'); } catch(e) {\n  return { json: { _skip: true, _error: String(e) } };\n}\nreturn { json: {\n  content: content,\n  name: path.basename(filePath),\n  pendingName: $json.pendingName,\n  originalFileName: $json.originalFileName,\n  originalPath: $json.originalPath\n} };",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "read-user-version",
+      "name": "读取用户改版",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nvar originalPath = ($json && $json.originalPath) ? $json.originalPath : $('\\u8fc7\\u6ee4\\u5f85\\u5904\\u7406').item.json.originalPath;\nif (!originalPath) { return { json: { _skip: true } }; }\nconst filePath = path.join(vaultPath, originalPath);\nlet content = '';\ntry { content = fs.readFileSync(filePath, 'utf-8'); } catch(e) {\n  return { json: { _skip: true, _error: String(e) } };\n}\nreturn { json: { content: content, name: path.basename(filePath), originalPath: originalPath } };",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "read-original-2",
+      "name": "读取原始文件",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$json || !$json.content || $json._skip) { return { json: { _skip: true } }; }\nvar rawOriginal = $json.content;\nvar rawUser = String($('\\u8bfb\\u53d6\\u7528\\u6237\\u6539\\u7248').item.json.content || '');\nvar filterItem = $('\\u8fc7\\u6ee4\\u5f85\\u5904\\u7406').item;\nvar pendingName = String(filterItem.json.pendingName || '');\nvar originalFileName = String(filterItem.json.originalFileName || '');\nif (!rawOriginal || !rawUser) { return { json: { _skip: true } }; }\nvar titleMatch = rawUser.match(/archive_title:\\s*\"?([^\"\\n]+)\"?/);\nvar archiveTitle = '';\nif (titleMatch) {\n  var t = titleMatch[1].trim().replace(/^[\"']|[\"']$/g, '');\n  if (t && t !== '\"\"' && t !== \"''\") archiveTitle = t;\n}\nvar now = new Date();\nvar y = now.getFullYear();\nvar mo = String(now.getMonth() + 1).padStart(2, '0');\nvar d = String(now.getDate()).padStart(2, '0');\nvar h = String(now.getHours()).padStart(2, '0');\nvar mi = String(now.getMinutes()).padStart(2, '0');\nvar timeStr = y + '-' + mo + '-' + d + '-' + h + mi;\nvar suffix = archiveTitle ? '-' + archiveTitle : '';\nvar archiveFileName = '[\\u5bf9\\u8bdd] ' + timeStr + suffix + '.md';\nvar signalFileName = '[\\u4fe1\\u53f7] ' + timeStr + suffix + '.md';\nvar archiveContent = rawUser;\narchiveContent = archiveContent.replace(/type:\\s*\\u5f85\\u786e\\u8ba4/, 'type: \\u5bf9\\u8bdd\\u5b58\\u6863');\narchiveContent = archiveContent.replace(/status:\\s*\\S+/, 'status: archived');\nvar confirmDate = y + '-' + mo + '-' + d;\nif (archiveContent.indexOf('confirmed_date:') === -1) {\n  archiveContent = archiveContent.replace(/(---\\s*)$/m, 'confirmed_date: ' + confirmDate + '\\n$1');\n}\nvar maxLen = 12000;\nvar origForAI = rawOriginal.length > maxLen ? rawOriginal.substring(0, maxLen) + '\\n[...\\u622a\\u65ad...]' : rawOriginal;\nvar userForAI = rawUser.length > maxLen ? rawUser.substring(0, maxLen) + '\\n[...\\u622a\\u65ad...]' : rawUser;\nvar prompt = '## \\u539f\\u59cb\\u5bf9\\u8bdd\\uff08WF1\\u6e05\\u6d17\\u540e\\uff09\\n\\n' + origForAI + '\\n\\n---\\n\\n## \\u7528\\u6237\\u5ba1\\u9605\\u540e\\u7248\\u672c\\n\\n' + userForAI + '\\n\\n---\\n\\n\\u8bf7\\u5bf9\\u6bd4\\u4ee5\\u4e0a\\u4e24\\u4e2a\\u7248\\u672c\\uff0c\\u63d0\\u53d6\\u7528\\u6237\\u7684\\u6240\\u6709\\u4fee\\u6539\\u52a8\\u4f5c\\uff0c\\u8f93\\u51fa\\u4e2d\\u6587\\u4fe1\\u53f7\\u62a5\\u544a\\uff1a\\n1. \\u5220\\u9664\\u4e86\\u54ea\\u4e9b\\u5185\\u5bb9\\uff08\\u5217\\u5177\\u4f53\\u5185\\u5bb9+\\u53ef\\u80fd\\u539f\\u56e0\\uff09\\n2. \\u65b0\\u589e\\u4e86\\u54ea\\u4e9b\\u5185\\u5bb9\\uff08\\u5217\\u5177\\u4f53\\u5185\\u5bb9\\uff09\\n3. \\u4fee\\u6539/\\u7ea0\\u6b63\\u4e86\\u4ec0\\u4e48\\uff08\\u4fee\\u6539\\u524d\\u540e\\u5bf9\\u6bd4\\uff09\\n4. \\u6807\\u8bb0\\uff08\\u9ad8\\u4eae\\u3001\\u5220\\u9664\\u7ebf\\u3001\\u5907\\u6ce8\\u7b49\\uff09\\n5. \\u6587\\u672b\\u6307\\u4ee4\\u6216\\u5907\\u6ce8\\n6. \\u603b\\u4f53\\u6a21\\u5f0f\\uff08\\u7528\\u6237\\u5173\\u6ce8\\u4ec0\\u4e48\\u3001\\u503e\\u5411\\u662f\\u4ec0\\u4e48\\uff09\\n\\n\\u7528Markdown\\u683c\\u5f0f\\uff0c\\u6807\\u9898\\u7528##\\uff0c\\u5217\\u8868\\u7528-\\u3002\\u6ca1\\u6709\\u4fee\\u6539\\u7684\\u9879\\u5199\\u201c\\u65e0\\u201d\\u3002';\nreturn {\n  json: {\n    archiveFileName: archiveFileName,\n    archiveContent: archiveContent,\n    signalFileName: signalFileName,\n    prompt: prompt,\n    originalFileName: originalFileName,\n    pendingPath: String(filterItem.json.pendingPath || '')\n  }\n};",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "build-archive",
+      "name": "组装归档",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$json || !$json.archiveFileName || !$json.archiveContent || $json._skip) { return { json: { _skip: true } }; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst archiveDir = path.join(vaultPath, '\\u5bf9\\u8bdd\\u5b58\\u6863');\nif (!fs.existsSync(archiveDir)) { fs.mkdirSync(archiveDir, { recursive: true }); }\nconst outputPath = path.join(archiveDir, $json.archiveFileName);\nfs.writeFileSync(outputPath, $json.archiveContent, 'utf-8');\nif ($json.pendingPath) {\n  var pendingFilePath = path.join(vaultPath, $json.pendingPath);\n  try {\n    var pc = fs.readFileSync(pendingFilePath, 'utf-8');\n    var fmEnd = pc.indexOf('\\n---', 4);\n    if (fmEnd > 0) {\n      var fm = pc.substring(0, fmEnd);\n      var rest = pc.substring(fmEnd);\n      fm = fm.replace(/status:\\s*done/i, 'status: archived');\n      fm = fm.replace(/status:\\s*\\n\\s*-\\s*done/i, 'status: archived');\n      pc = fm + rest;\n    }\n    fs.writeFileSync(pendingFilePath, pc, 'utf-8');\n  } catch(e) {}\n}\nreturn { json: {\n  success: true,\n  path: outputPath,\n  fileName: $json.archiveFileName,\n  signalFileName: $json.signalFileName,\n  prompt: $json.prompt\n} };",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "write-archive-2",
+      "name": "写入对话存档",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ 'Bearer ' + $env.OPENAI_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({model: 'gpt-4o-mini', messages: [{role: 'system', content: '你是数字分身系统的信号提取助手。对比用户审阅前后的对话版本，找出所有修改，提取修改动作和意图信号。分析维度：1.删除内容及原因 2.新增内容 3.修改/纠正 4.标记(高亮/删除线/备注) 5.用户指令 6.整体模式。输出中文Markdown，每个维度用##标题+列表，无变化写无，最后加综合判断。'}, {role: 'user', content: $json.prompt}], temperature: 0.3, max_tokens: 2000}) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "ai-signal",
+      "name": "AI信号提炼",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2000,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$json || $json._skip) { return { json: { _skip: true } }; }\nvar aiContent = '';\ntry {\n  if ($json.choices && $json.choices[0] && $json.choices[0].message) {\n    aiContent = $json.choices[0].message.content || '';\n  } else if ($json.error) {\n    aiContent = '# AI\\u4fe1\\u53f7\\u63d0\\u53d6\\u5931\\u8d25\\n\\n\\u9519\\u8bef: ' + JSON.stringify($json.error);\n  } else {\n    aiContent = '# AI\\u4fe1\\u53f7\\u63d0\\u53d6\\u5931\\u8d25\\n\\nAPI\\u8fd4\\u56de\\u683c\\u5f0f\\u5f02\\u5e38: ' + JSON.stringify($json).substring(0, 500);\n  }\n} catch(e) {\n  aiContent = '# AI\\u4fe1\\u53f7\\u63d0\\u53d6\\u5931\\u8d25\\n\\n\\u89e3\\u6790\\u9519\\u8bef: ' + String(e);\n}\nvar signalFileName = '';\ntry { signalFileName = $('\\u5199\\u5165\\u5bf9\\u8bdd\\u5b58\\u6863').item.json.signalFileName || ''; } catch(e) {}\nif (!signalFileName) {\n  try { signalFileName = $('\\u7ec4\\u88c5\\u5f52\\u6863').item.json.signalFileName || ''; } catch(e) {}\n}\nif (!signalFileName) signalFileName = '[\\u4fe1\\u53f7] unknown.md';\nvar now = new Date().toISOString().slice(0, 10);\nvar sourceFile = '';\ntry { sourceFile = $('\\u7ec4\\u88c5\\u5f52\\u6863').item.json.archiveFileName || ''; } catch(e) {}\nvar signalContent = '---\\ntype: \\u7528\\u6237\\u6821\\u5bf9\\u4fe1\\u53f7\\ndate: ' + now + '\\nsource_file: ' + JSON.stringify(sourceFile) + '\\n---\\n\\n' + aiContent;\nreturn { json: { signalFileName: signalFileName, signalContent: signalContent } };",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "format-signal",
+      "name": "格式化信号",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2220,
+        290
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if (!$json || !$json.signalFileName || !$json.signalContent || $json._skip) { return { json: { _skip: true } }; }\nconst fs = require('fs');\nconst path = require('path');\nconst vaultPath = 'D:\\\\数字分身2\\\\vault\\\\数字分身';\nconst signalDir = path.join(vaultPath, '\\u5bf9\\u8bdd\\u5b58\\u6863', '\\u4fe1\\u53f7');\nif (!fs.existsSync(signalDir)) { fs.mkdirSync(signalDir, { recursive: true }); }\nconst outputPath = path.join(signalDir, $json.signalFileName);\nfs.writeFileSync(outputPath, $json.signalContent, 'utf-8');\nreturn { json: { success: true, path: outputPath, fileName: $json.signalFileName } };",
+        "mode": "runOnceForEachItem"
+      },
+      "id": "write-signal",
+      "name": "写入信号报告",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2440,
+        290
+      ]
+    }
+  ],
+  "connections": {
+    "手动触发": {
+      "main": [
+        [
+          {
+            "node": "列出待确认",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "列出待确认": {
+      "main": [
+        [
+          {
+            "node": "列出对话存档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "列出对话存档": {
+      "main": [
+        [
+          {
+            "node": "过滤待处理",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "过滤待处理": {
+      "main": [
+        [
+          {
+            "node": "读取用户改版",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "读取用户改版": {
+      "main": [
+        [
+          {
+            "node": "读取原始文件",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "读取原始文件": {
+      "main": [
+        [
+          {
+            "node": "组装归档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "组装归档": {
+      "main": [
+        [
+          {
+            "node": "写入对话存档",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "写入对话存档": {
+      "main": [
+        [
+          {
+            "node": "AI信号提炼",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI信号提炼": {
+      "main": [
+        [
+          {
+            "node": "格式化信号",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "格式化信号": {
+      "main": [
+        [
+          {
+            "node": "写入信号报告",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null
+}

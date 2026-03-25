@@ -1,0 +1,119 @@
+[
+  {
+    "id": "B3-A1",
+    "text": "用户的碎片化表达和框架后置不只是表达风格，而是认知流程的真实结构：用户先感知到'缺了什么'或'这里不对'（直觉判断），然后通过碎片化表达把这个感知输出，依赖AI去整合成完整框架。纠偏'第一步是前因后果，不是金句'是直觉性的一句话，没有给出推理链，但判断是准确的。这种认知风格意味着：AI如果不帮用户整合框架（只接受碎片化指令），用户的感知价值就无法转化为可执行的方向。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_cognitive_style,bias_record,framework_validation",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "558-745",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-A2",
+    "text": "用户的焦虑聚焦在'信息丢失'和'系统不完整'两个具体触发点，不是泛化焦虑。'需要写入！！！'和'这轮对话关了，这些讨论过程和决策逻辑就丢了'都指向同一个焦虑核心：对话结束后上下文消失。这种焦虑是系统建设的驱动力（推动了对话留痕机制的建立），但同时也可能是'先记录后判断'的决策偏向来源。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_anxiety_pattern,profile_emotion_trigger,information_loss_anxiety",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "282,1069-1071",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-A3",
+    "text": "在推进复杂流程之前，用户倾向于先验证关键的技术假设。'你能不能准确的跟SPE进行匹配？先回答这个问题，未完'——用户在知道自己还有后续要说的情况下，先暂停推进，测试一个技术前提。这是决策风格中的'基础确认优先'模式，说明用户有意识地避免在未验证前提上建立流程。但这个特征在用户自己设计流程时并不总是触发。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_decision_style,verification_before_action",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "805-826",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-B1",
+    "text": "AI在处理用户碎片化输入时，倾向于跳过'问题框架验证'直接进入'方案生成'阶段。用户说'金句由谁记'，数字真我立刻给出A-E五方案，但没有先确认'金句'的定义范围、登记的目的、以及是否是当前最重要的问题（事实上不是，前因后果才是第一步）。识别信号：用户给出多义或模糊的任务描述时，AI如果没有先输出'我的理解是X，你指的是X吗'而是直接给方案，就应该被识别为风险。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_agent_behavior,pitfall_solution,skip_framework_validation",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "558-745",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-B2",
+    "text": "独立登记员窗口的根本问题不是'跨窗口传递摩擦'，而是'语境感知与客观性的不可兼得'：当事角色最了解上下文（知道什么值得记），但最容易美化；独立登记员最客观，但没有语境判断能力。当前选择（角色内置行为+关窗前兜底）接受了'美化倾向'的代价，换取了'语境感知'的优势，并通过复盘大脑交叉验证来对冲美化风险。这个对冲机制必须实际执行才有效。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture_decision,multi_window_tradeoff",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "651-685,1051-1065",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-B3",
+    "text": "对话留痕（自我总结）和复盘（独立分析）的职责边界：总结记录'发生了什么'——前因后果+关键转折+结论+产出；复盘分析'为什么发生+意味着什么'——行为模式、偏差来源、ABC精炼。两者做的是不同的事，总结质量越高复盘输入越好，但不存在总结做得够好就可以省掉复盘的情况。原因：当事角色天然缺乏旁观者视角，无法分析自己的行为模式。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_process,review_mechanism,summary_vs_review_boundary",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "3358-3382",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-C1",
+    "text": "用户原话：'第一步是把前因后果登记在册，你回忆刚才我们的对话，你是不知道前因后果的是我给到了你cursor_10.md你才明白的，然后才是金句提炼。'——用户从自身实际经历归纳出的设计原则：前因后果优先于金句提炼，没有上下文金句是孤立的。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_design_intuition,knowledge_process,context_first_principle",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "739",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-C2",
+    "text": "用户原话：'独立思考！不要顺着我'——在要求数字真我自己安排方案时，立刻补充的约束条件。用户对AI顺从行为有强烈警觉，主动要求独立判断，与宪法'不顺着用户'条目一致。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_anti_sycophancy,knowledge_agent_behavior",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "1208",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  },
+  {
+    "id": "B3-C3",
+    "text": "用户原话：'你把所谓的金句也提炼了吗？如果是客观的我同意'——'客观'是用户接受AI精炼内容的前提条件。用户对AI有基本的不信任预设，认为AI的自我评估和总结天然可能有偏差，需要先确认性质。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_objectivity_demand,knowledge_data_quality",
+      "source_file": "2026-03-23_05-37-59Z-数字真我启动.md",
+      "line_numbers": "1147",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-23"
+    }
+  }
+]

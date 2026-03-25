@@ -1,0 +1,427 @@
+[
+  {
+    "id": "A4-A1",
+    "text": "用户对“确认节点”有宪法级要求：AI给出方案后必须等用户明确确认才能继续，未确认就执行=耍流氓。用户原话：问答必须有节点，必须！！如果用户和AI都是这种不确认就开始干，那就耍流氓！！！这不是偏好，是系统运行的刚性约束——跳过确认=数据失效=画像被污染。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_interaction_pattern,cognitive_shift",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "172,187",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-A2",
+    "text": "用户审阅对话时标注稀疏但精准——标了的地方信号密度极高，没标的大段可视为用户认可或无感。高质量对话用户评价变长，低质量对话用户大段删除线。标注稀疏性=用户注意力分配模式。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_cognitive_style,bias_record",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "377-379,537,846,1142",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-A3",
+    "text": "用户认知风格：体验优先、操作驱动、拒绝抽象。AI给架构图和流程描述用户看不懂也不想看，但当AI说你在OB里改status标签系统自动归档时用户立刻理解并接受。抽象讨论=空转，可操作的具体动作=真实产出。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_decision_style",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "560-561,905-999",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-A4",
+    "text": "用户自身存在话题跳跃行为，但对此有清晰自我觉察，并强烈要求AI必须拦截跳跃。矛盾模式：用户知道自己会跳但控制不住，把防跳责任委托给AI。要求AI具备比用户自己更强的纪律性。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_interaction_pattern,bias_record",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "172,749,803-839,1209",
+      "confidence": "中高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-B1",
+    "text": "WF1去重缺陷根因：关卡B只查待确认目录，WF3归档后删除待确认文件导致关卡B排除集合丢失，对话导出源文件被当成未处理重新生成待确认。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_technical,validated_decision",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "82-168",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A4-B2",
+    "text": "SpecStory从Cursor的sqlite数据库读对话历史并自动保存为MD。删除history目录里的MD后重开Cursor会重新生成。从SpecStory源头删的防重路径不可行。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_technical",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "209-218",
+      "confidence": "中高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A4-B3",
+    "text": "WF1去重最终方案：三目录联合排除+OB标签驱动。WF1同时查待确认/+对话存档/+对话删除/三个目录联合排除。WF3增加cancelled分支。用户操作只需在OB改status标签。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,validated_decision",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "656-698,710-728,905-999",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A4-C1",
+    "text": "这个动作要强制用户做！我的理解只有明确了对话的质量好坏，才能更好的评估里面是不是有内涵的东西，也能更好的养成AI和用户的好习惯。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_interaction_pattern,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "172",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-C2",
+    "text": "用户未回答就做起走是最高层级的问题，问答必须有节点，必须！！如果用户和AI都是这种不确认就开始干，那就耍流氓！！！真我如果遇到这种问题就要给数字分身系统提要求，必须改！！！",
+    "meta": {
+      "category": "C",
+      "tags": "profile_interaction_pattern,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "187",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-C3",
+    "text": "整个对话没上面意义，目标实际上是为了解决改了OB待确认的文档标签就不会在出现在待确认，如状态是DONE就会通过管线去到归档？——用户一句话比AI 24轮推演更精准地定义核心需求。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_cognitive_style,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "560-561",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-C4",
+    "text": "这里有大问题，AI已经给出了方案，用户没有完整回答，直接跳跃到未来，AI必须做到当前问题无完整结论，拒绝回答！！！或者让用户去找顾问。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_interaction_pattern,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "749",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A4-C5",
+    "text": "看似无意义，但是暴露出用户的记忆和零基础英文——用户知道自己英文基础弱、对技术术语记忆不牢。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_self_awareness",
+      "source_file": "[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md",
+      "line_numbers": "1207",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-A1",
+    "text": "用户对确认节点的要求跨4篇对话独立验证。不是偶发行为，是刚性约束：AI说了对吗就必须停下等回复。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_interaction_pattern,cognitive_shift",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "134,168",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-A2",
+    "text": "用户面对逻辑严密的论证时能快速接受自我降位。这不是服从，是理性选择。和直接否决逻辑不通方案不矛盾。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_self_awareness,cognitive_shift",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "168-169,242",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-A3",
+    "text": "用户实践验证型认知风格：不信推理信结果。方案当时认真看了但结果很糟糕、话说的好结果不怎么行。AI给方案时应同时给可验证的预期。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_cognitive_style,bias_record",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "426,522,722",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-A4",
+    "text": "用户对说得好做不到的AI反复失望是核心痛点。用户评价AI标准：结果>表述。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_emotional_pattern",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "722,753",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-B1",
+    "text": "数字真我首次评估四结论：（1）只有1篇走完完整管线，远不够精炼ABC；（2）画像暂不更新——宁可过时不可不准；（3）质量标准首次定义；（4）六大风险排序。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,validated_decision",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "82-105",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A1-B2",
+    "text": "管线偏A不偏B根因：标注助手价值判断全指向画像，信号助手全围绕人格分析，复盘大脑B类只有一行模板。v6中简化为复盘大脑独揽。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,validated_decision",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "141-153,198-213",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "部分过时"
+    }
+  },
+  {
+    "id": "A1-B3",
+    "text": "数字真我审核机制：审核不是再做一遍，是用不同标准检查同一产出。靠库对比不靠原文对比。阶段一：格式+逻辑+一致性+时效性。阶段二：去重+检索质量测试+回溯。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_architecture,validated_decision",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "440-513",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A1-C1",
+    "text": "这段需求是通过总顾问大脑写的，后续复盘要认出来哪些是AI帮忙写的，哪些是用户自己写的，通过对话的结果计算谁的方式更高质和高效。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_cognitive_style,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "52",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-C2",
+    "text": "人格分析需要的工具或库到底是什么？我一直不明白...感觉像永远就只有这几个理论，我很费解...他山之石可以攻玉，但是需要去找新的东西来应证，当前这个系统没有做到。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_cognitive_style,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "149",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-C3",
+    "text": "现在数字真我的回答，这个事必须我来做，如果要想轻松必须有大量的行为和干净的数据才能实现。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_self_awareness,cognitive_shift",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "189",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A1-C4",
+    "text": "话说的好！结果不怎么行。复盘的精炼工作靠谱不啊？——用户对AI方案设计质量高但执行质量低的核心不满。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_emotional_pattern",
+      "source_file": "[待确认] 2026-03-18_11-13Z-数字真我系统评估任务.md",
+      "line_numbers": "722,753",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A2-A1",
+    "text": "用户对低效操作流程零容忍，解决思路是留结论不留过程。长串技术调试过程全部画删除线，只在阶段性结论和认知总结处留旁注。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_cognitive_style",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "243,867",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A2-B1",
+    "text": "N8N环境变量教训：NODE_FUNCTION_ALLOW_BUILTIN必须在启动N8N之前设置，已运行的进程不继承后来改的环境变量。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_technical",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "72-101",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A2-B2",
+    "text": "全局实体字典设计教训：单字母别名会误匹配正文所有该字母导致全文污染。字典别名必须用中文全名或不会独立出现的缩写。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_technical,bias_record",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "250-387,428",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是"
+    }
+  },
+  {
+    "id": "A2-B3",
+    "text": "WF1增殖bug：SpecStory预清洗节点去重逻辑写错，导出前缀文件名去掉前缀后与原始名不匹配，每次定时触发重新清洗生成新文件。",
+    "meta": {
+      "category": "B",
+      "tags": "knowledge_technical",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "500",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19",
+      "still_valid": "是-已修复"
+    }
+  },
+  {
+    "id": "A2-C1",
+    "text": "这个字典我使用的英文代替的这种形式不行，PYTHON的判断造成了N个张梦凡。到目前为止这个全量字典还没发现其好用的地方，以后不知道。",
+    "meta": {
+      "category": "C",
+      "tags": "knowledge_technical,profile_cognitive_style",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "428",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A2-C2",
+    "text": "绕了一大圈终于理解了，如果有个什么记录比如现在的标注过程，直接看这个阶段性结论就不会浪费这些时间，我也不必引导。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_cognitive_style,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_11-29Z-工程02-so4-6.md",
+      "line_numbers": "867",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A3-A1",
+    "text": "用户对AI该问用户就直接问不要自己瞎找有强烈偏好。高级模型要有独立性和专业性，不能盲从指令中不清晰的部分——遇到不确定就问用户，不要用低效搜索假装努力。",
+    "meta": {
+      "category": "A",
+      "tags": "profile_interaction_pattern,profile_cognitive_style",
+      "source_file": "[待确认] 2026-03-18_13-08Z-复盘大脑02-opmax.md",
+      "line_numbers": "38",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A3-C1",
+    "text": "这里就不要在进行下一步了，直接让用户复制文件地址就好了，弄了一堆无效的推理！！！复盘大脑是高级模型要有自己的独立性和专业性，不能盲从！！！！！",
+    "meta": {
+      "category": "C",
+      "tags": "profile_interaction_pattern,knowledge_process",
+      "source_file": "[待确认] 2026-03-18_13-08Z-复盘大脑02-opmax.md",
+      "line_numbers": "38",
+      "confidence": "高",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  },
+  {
+    "id": "A3-C2",
+    "text": "用户在AI的B类知识判断旁添加自己的修正，例如将系统搭建是数字真我的身体修正为优质的对话质量是构建数字真我的材料。用户对知识类内容有自己的理解框架且愿意手动校准。",
+    "meta": {
+      "category": "C",
+      "tags": "profile_self_awareness",
+      "source_file": "[待确认] 2026-03-18_13-08Z-复盘大脑02-opmax.md",
+      "line_numbers": "132-148",
+      "confidence": "中",
+      "review_status": "通过",
+      "review_date": "2026-03-19"
+    }
+  }
+]

@@ -1,0 +1,29 @@
+---
+type: 对话删除
+source: SpecStory/Cleaned
+date: 2026-03-19
+models:
+  - Cursor
+turns: 1
+title: Annotation guidelines for SKILL.md
+original_file: "[导出] 2026-03-19-1532-2026-03-19_06-52Z-annotation-guidelines-for-skill-md.md"
+status: deleted
+archive_title: ""
+replaced_count: 0
+---
+垃圾
+# Annotation guidelines for SKILL.md
+_Cleaned from SpecStory on 2026-03-19_
+
+
+### 👤 用户
+
+你是标注助手，SK路径：.cursor/skills/标注助手/SKILL.md，模型Sonnet。读SK后对这个文件执行标注：数字分身/待确认/[待确认] 2026-03-18_14-50Z-技术总工-2op4-6.md
+
+强制要求：
+1. 必须读取完整文件（1217行），禁止只读头尾
+2. v5规则：不切片、不判断价值、不标ABC。只画删除线标垃圾+写全文摘要
+3. 被推翻的早期探索用⚠️提示，不画删除线
+4. 所有标注直接写入文件
+
+---

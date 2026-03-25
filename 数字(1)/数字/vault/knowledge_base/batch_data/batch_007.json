@@ -1,0 +1,93 @@
+[
+  {
+    "id": "B7-A1",
+    "type": "A",
+    "label": "profile_决策风格 / profile_能力边界认知",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "474, 660",
+    "confidence": "中",
+    "text": "用户在AI执行工具调用连续失败（Cancelled×2）时，立刻决策「安排给杂务」而非等待第三次重试——体现对AI能力边界的清醒认知，及快速决策风格。同轮结束时自评「本篇是执行，没有什么有价值的段落」，表现出对对话价值的即时元认知，但此自评与事后引子的复盘价值不符，有自评精度偏低的模式。"
+  },
+  {
+    "id": "B7-A2",
+    "type": "A",
+    "label": "profile_任务坚持 / profile_求助模式",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "637, 820, 870, 964",
+    "confidence": "中",
+    "text": "用户在技术执行遭遇连续路径报错（4次）时，逐次贴错误信息依赖AI诊断，不独立处理技术问题，但也不放弃（每次报错后继续跟进）。在挫败感累积后（行964「不行就重建1个新OB」）短暂出现「推倒重建」冲动，实际没有执行，转为听从AI分析的方案1（移动knowledge_base）。"
+  },
+  {
+    "id": "B7-B1",
+    "type": "B",
+    "label": "knowledge_窗口分工 / knowledge_大脑操作纪律",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "444-485",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "Cursor AI在跨窗口文件大批量移动操作上（工具调用层面）可能连续失败（Cancelled），应出指令给杂务执行，不让大脑直接动手。大脑Cancelled≠指令理解错误，是工具调用执行层限制。杂务执行指令路径：vault/数字分身/数字分身/待执行指令/。"
+  },
+  {
+    "id": "B7-B2",
+    "type": "B",
+    "label": "knowledge_N8N / knowledge_路径管理",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "612, 637-911",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "N8N工作流的硬编码路径不存在于仓库JSON文件的文本行中（运行时数据存于N8N数据库），因此「搜索仓库文件中的旧路径」无法发现N8N路径问题。验证N8N路径的唯一方法是在N8N界面逐节点检查Code节点的hardcoded变量（如vaultPath、speDir）。公司路径为D:\\数字分身2\\vault\\数字分身，家里路径为E:\\----2\\vault\\数字分身。"
+  },
+  {
+    "id": "B7-B3",
+    "type": "B",
+    "label": "knowledge_架构 / knowledge_OB",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "975-1022",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "OB vault的可见范围是打开时指定的根目录（D:\\数字分身2\\vault\\）。Cursor项目根目录下与vault并列的目录（如knowledge_base/）在OB中不可见。需要在OB里审阅的内容（知识库inbox、精炼MD）必须放在vault子目录内，不能放在vault外。项目合并后knowledge_base/已移入vault/knowledge_base/。"
+  },
+  {
+    "id": "B7-B4",
+    "type": "B",
+    "label": "knowledge_N8N / knowledge_路径管理",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "1079-1088",
+    "confidence": "高",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "WF1的speDir使用path.join(vaultPath, '..', '.specstory', 'history')从vaultPath往上一层找SPE目录。当vaultPath为D:\\数字分身2\\vault\\数字分身时，往上一层到D:\\数字分身2\\vault\\，但.specstory在仓库根D:\\数字分身2\\，需再往上一层。修复方案：speDir改为path.join(vaultPath, '..', '..', '.specstory', 'history')，本篇未完成验证。此相对路径依赖vaultPath的层级深度，改路径时需同步检查。"
+  },
+  {
+    "id": "B7-B5",
+    "type": "B",
+    "label": "knowledge_窗口分工 / window_总顾问",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "89, 330-354",
+    "confidence": "中",
+    "decision_date": "2026-03-23",
+    "still_valid": true,
+    "text": "总顾问大脑-03在接收数字真我审核意见时全部采纳（7/7建议改，无一质疑或拒绝），在接收用户宪法级新任务时未追问与管线冻结令的冲突。两个场景指向同一模式：面对上级指令（用户/数字真我）时缺乏独立质疑。需在D-窗口档案记录，胜率之我审计时关注。"
+  },
+  {
+    "id": "B7-C1",
+    "type": "C",
+    "label": "profile_挫败响应 / profile_推倒重建倾向",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "964",
+    "confidence": "低",
+    "text": "「今天数字真我合并在一起了请检查OB啊，我没看到更新，不行就重建1个新OB。」（用户原话。语境：多次路径报错后，在OB未见更新时出现的临时重建冲动，最终未执行。）"
+  },
+  {
+    "id": "B7-C2",
+    "type": "C",
+    "label": "profile_自我评估 / profile_元认知",
+    "source": "[待确认] 2026-03-23_04-01-22Z-总顾问大脑03.md",
+    "source_lines": "660",
+    "confidence": "中",
+    "text": "「启动总结SK，本篇是个执行没有什么有价值的段落，结果目前在执行。」（用户原话。语境：关窗前触发总结时的自评。值得注意：此自评与本篇事后复盘引子所揭示的6条分析价值不符，说明即时自评精度有限。）"
+  }
+]
