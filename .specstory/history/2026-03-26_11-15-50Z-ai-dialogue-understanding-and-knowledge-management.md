@@ -35,15 +35,1432 @@ Parameters:
 
 ```json
 {
-  "name": "general-purpose",
-  "subagentType": "unspecified"
+  "description": "探索现有知识库架构",
+  "model": "composer-2-fast",
+  "name": "explore",
+  "prompt": "探索以下目录结构和关键文件，帮我理解这个项目的知识库架构：\n\n1. 查看 &#96;vault/knowledge_base/&#96; 目录结构（所有子目录和文件）\n2. 查看 &#96;vault/数字分身/数字分身/&#96; 目录下的文件列表\n3. 读取 &#96;vault/数字分身/数字分身/交接备忘.md&#96; 的内容\n4. 查看 &#96;.cursor/skills/数字真我/SKILL.md&#96; 的内容\n5. 查看 &#96;.cursor/skills/复盘大脑/SKILL.md&#96; 的内容\n6. 查看 &#96;vault/knowledge_base/refined/&#96; 目录下有哪些文件和子目录\n7. 查看 &#96;vault/knowledge_base/batch_data/&#96; 目录下有哪些文件\n8. 查看 &#96;vault/knowledge_base/scripts/&#96; 目录下有哪些脚本\n\n返回所有找到的内容，特别关注：\n- 知识库的三层架构是如何实现的\n- 精炼三分类（ABC）的具体格式\n- 现有的入库流程和审核机制\n- 向量库的实现方式\n- 交接备忘中的系统现状",
+  "subagentType": "explore"
 }
 ```
 Additional data:
 
 ```json
 {
-  "status": "loading"
+  "status": "success",
+  "subagentComposerId": "4e1494cd-6d4b-41bb-86d4-6a47f51390d3",
+  "terminationReason": "completed"
+}
+```
+Result:
+
+```json
+{
+  "agentId": "4e1494cd-6d4b-41bb-86d4-6a47f51390d3"
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
+<summary>Tool use: **task_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+现在我对你的现有体系有了全面了解。让我确认一下我对你需求的理解：
+
+**你的意思是**：设计一个通用的"对话驱动认知积累"架构——
+
+- **核心场景**：用户和AI对话 → 对话中产生有价值的认知 → 通过提取器结构化入库 → 下次对话AI已经"认识"用户
+- **你要的不是改你现有系统**，而是一个**完整的架构思路图**——包含中枢层、提取层、审核层、指令触发、补丁机制等
+- **三元**指的是三元组（主体-关系-客体），作为知识的基本存储单元
+- **200K上下文快满时**自动总结入库，不丢失认知
+- **这个架构要考虑**：多提取器协调、质量审核、增量补丁、冲突处理等细节
+
+对吗？
+
+在我出方案前，有两个关键问题需要你确认：
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question">
+<details>
+<summary>Tool use: **ask_question**</summary>
+
+
+Parameters:
+
+```json
+{
+  "questions": [
+    {
+      "id": "scope",
+      "options": [
+        {
+          "id": "blueprint",
+          "label": "纯架构蓝图/思路图——先不管实现，把机制想清楚"
+        },
+        {
+          "id": "evolve",
+          "label": "基于我现有系统（数字真我/知识库/管线）的升级方案"
+        },
+        {
+          "id": "both",
+          "label": "两者都要——先出通用架构，再标注哪些能复用现有体系"
+        }
+      ],
+      "prompt": "这个架构的定位是什么？"
+    },
+    {
+      "id": "triple",
+      "options": [
+        {
+          "id": "spo",
+          "label": "三元组（主体-关系-客体），比如'用户-偏好-深度分析'"
+        },
+        {
+          "id": "abc",
+          "label": "就是你现有的ABC分类（画像/知识/观点）"
+        },
+        {
+          "id": "custom",
+          "label": "其他含义，我补充说明"
+        }
+      ],
+      "prompt": "你说的'三元'具体指什么？"
+    }
+  ],
+  "title": "架构策划前的关键确认"
+}
+```
+Additional data:
+
+```json
+{
+  "currentSelections": {
+    "scope": [
+      "blueprint"
+    ],
+    "triple": [
+      "__freeform_other__"
+    ]
+  },
+  "freeformTexts": {
+    "scope": "",
+    "triple": "三元是指EpisTwin的一个框架，EpisTwin（2026年3月）：用个人知识图谱替代纯向量检索，语义三元组组织用户数据，87%复杂查询正确"
+  },
+  "status": "submitted"
+}
+```
+Result:
+
+```json
+{
+  "answers": [
+    {
+      "freeformText": "",
+      "questionId": "scope",
+      "selectedOptionIds": [
+        "blueprint"
+      ]
+    },
+    {
+      "freeformText": "三元是指EpisTwin的一个框架，EpisTwin（2026年3月）：用个人知识图谱替代纯向量检索，语义三元组组织用户数据，87%复杂查询正确",
+      "questionId": "triple"
+    }
+  ]
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question"><details>
+<summary>Tool use: **ask_question**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+明白了。你要的是：
+
+1. **纯架构蓝图**——先把机制想清楚，不管实现
+2. **三元是EpisTwin的语义三元组**——不是简单的ABC分类，而是知识图谱级别的结构化存储
+
+让我先查一下EpisTwin的具体框架，确保三元组的定义准确。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "EpisTwin 2026 personal knowledge graph semantic triple user data"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: EpisTwin 2026 personal knowledge graph semantic triple user data"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "EpisTwin knowledge graph episodic memory AI personal assistant 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: EpisTwin knowledge graph episodic memory AI personal assistant 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "EpisTwin personal knowledge graph semantic triples 87% complex query"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: EpisTwin personal knowledge graph semantic triples 87% complex query"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "\"EpisTwin\" AI framework 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: \"EpisTwin\" AI framework 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "personal digital twin knowledge graph semantic triple user modeling AI memory 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: personal digital twin knowledge graph semantic triple user modeling AI memory 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "AI personal memory system knowledge graph triple store user preference learning 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: AI personal memory system knowledge graph triple store user preference learning 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "AI memory architecture knowledge graph user modeling semantic triples personal assistant"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: AI memory architecture knowledge graph user modeling semantic triples personal assistant"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "LLM long term memory knowledge graph personal knowledge base architecture 2025 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [[2603.03290] AriadneMem: Threading the Maze of Lifelong Memory for LLM Agents](https://arxiv.org/abs/2603.03290)\n2. [[2603.06290v1] The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI](https://arxiv.org/abs/2603.06290v1)\n3. [](https://arxiv.org/pdf/2602.03315)\n4. [Dynamic Persona MoE RAG: Building a Memory-Driven Synthetic Intelligence with Knowledge Graphs and Persona Evolution](https://danielkliewer.com/blog/2026-02-03-dynamic-persona-moe-rag-building-memory-driven-synthetic-intelligence)\n5. [](https://arxiv.org/pdf/2603.17244)\n\n# LLM Long-Term Memory and Knowledge Graph Architecture (2025-2026)\n\n## Key Architectural Approaches\n\n**Graph-Based Memory Systems**: Recent architectures emphasize knowledge graphs as primary storage for long-term memory. AriadneMem uses structured memory with entropy-aware filtering and conflict-aware coarsening to handle disconnected evidence and state updates in multi-hop reasoning tasks.[1] EpisTwin grounds generative reasoning in a Personal Knowledge Graph, lifting heterogeneous cross-application data into semantic triples via multimodal language models.[2]\n\n**Harmonic Memory Representation**: MEMORA balances abstraction and specificity through a two-tier structure with primary abstractions that index concrete values and cue anchors that expand retrieval access. Both standard RAG and knowledge graph systems emerge as special cases of this framework.[3]\n\n**Neuro-Symbolic Foundations**: Kumiho implements graph-native cognitive memory grounded in formal AGM belief revision semantics, using a dual-store model (Redis for working memory, Neo4j for long-term graphs) with immutable revisions, mutable tag pointers, and URI-based addressing.[5]\n\n## Personal Knowledge Base Architecture\n\n**Dynamic Persona Integration**: The Dynamic Persona MoE RAG approach treats markdown archives as long-term memory substrates where short-term mutable persona states evolve through continuous weight adjustments. Time-indexed personas capture perspective snapshots that change as new information arrives.[4]\n\n**Multi-Modal Grounding**: EpisTwin combines Graph Retrieval-Augmented Generation with Online Deep Visual Refinement, dynamically re-grounding symbolic entities in raw visual context for trustworthy personal AI.[2]\n\n## Performance Improvements\n\nAriadneMem improves Multi-Hop F1 by 15.2% while reducing runtime by 77.8% using only 497 context tokens on the LoCoMo benchmark.[1] Kumiho achieves 0.447 four-category F1 with 97.5% adversarial refusal accuracy.[5]",
+      "title": "Web search results for query: LLM long term memory knowledge graph personal knowledge base architecture 2025 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+找到了。EpisTwin正是你说的那个框架。让我获取更多细节。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch">
+<details>
+<summary>Tool use: **web_fetch**</summary>
+
+
+Parameters:
+
+```json
+{
+  "url": "https://arxiv.org/abs/2603.06290v1"
+}
+```
+Result:
+
+```json
+{
+  "markdown": "[2603.06290v1] The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI\n\n --\u003e\n\n# Computer Science \u003e Artificial Intelligence\n\narXiv:2603.06290v1 (cs)\n\n[Submitted on 6 Mar 2026]\n\n# Title:The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI\n\nAuthors: [Giovanni Servedio](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Servedio,+G), [Potito Aghilar](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Aghilar,+P), [Alessio Mattiace](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Mattiace,+A), [Gianni Carmosino](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Carmosino,+G), [Francesco Musicco](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Musicco,+F), [Gabriele Conte](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Conte,+G), [Vito Walter Anelli](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Anelli,+V+W), [Tommaso Di Noia](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Di+Noia,+T), [Francesco Maria Donini](https://arxiv.org/search/cs?searchtype=author\u0026amp;query=Donini,+F+M)\n\n[View PDF](https://arxiv.org/pdf/2603.06290v1) [HTML (experimental)](https://arxiv.org/html/2603.06290v1)\n\n\u003e Abstract:Personal Artificial Intelligence is currently hindered by the fragmentation of user data across isolated silos. While Retrieval-Augmented Generation offers a partial remedy, its reliance on unstructured vector similarity fails to capture the latent semantic topology and temporal dependencies essential for holistic sensemaking. We introduce EpisTwin, a neuro-symbolic framework that grounds generative reasoning in a verifiable, user-centric Personal Knowledge Graph. EpisTwin leverages Multimodal Language Models to lift heterogeneous, cross-application data into semantic triples. At inference, EpisTwin enables complex reasoning over the personal semantic graph via an agentic coordinator that combines Graph Retrieval-Augmented Generation with Online Deep Visual Refinement, dynamically re-grounding symbolic entities in their raw visual context. We also introduce PersonalQA-71-100, a synthetic benchmark designed to simulate a realistic user's digital footprint and evaluate EpisTwin performance. Our framework demonstrates robust results across a suite of state-of-the-art judge models, offering a promising direction for trustworthy Personal AI.\n\n \n\n[https://doi.org/10.48550/arXiv.2603.06290](https://doi.org/10.48550/arXiv.2603.06290)\n\n \n\narXiv-issued DOI via DataCite\n\n| Subjects: | Artificial Intelligence (cs.AI); Computation and Language (cs.CL) |\n| --- | --- |\n| Cite as: | [arXiv:2603.06290](https://arxiv.org/abs/2603.06290) [cs.AI] |\n| (or [arXiv:2603.06290v1](https://arxiv.org/abs/2603.06290v1) [cs.AI] for this version) |\n\n## Submission history\n\nFrom: Giovanni Servedio [[view email](https://arxiv.org/show-email/e76eb87d/2603.06290)] [v1] Fri, 6 Mar 2026 13:48:23 UTC (208 KB)\n\n \n\nFull-text links:\n\n## Access Paper:\n\n- [View PDF](https://arxiv.org/pdf/2603.06290v1)\n- [HTML (experimental)](https://arxiv.org/html/2603.06290v1)\n- [TeX Source](https://arxiv.org/src/2603.06290v1)\n\n[view license](http://creativecommons.org/licenses/by/4.0/)\n\n \n\nCurrent browse context:\n\ncs.AI\n\n[\u003c prev](https://arxiv.org/prevnext?id=2603.06290\u0026amp;function=prev\u0026amp;context=cs.AI)| [next \u003e](https://arxiv.org/prevnext?id=2603.06290\u0026amp;function=next\u0026amp;context=cs.AI)\n\n[new](https://arxiv.org/list/cs.AI/new)| [recent](https://arxiv.org/list/cs.AI/recent)| [2026-03](https://arxiv.org/list/cs.AI/2026-03)\n\nChange to browse by:\n\n[cs](https://arxiv.org/abs/2603.06290?context=cs) [cs.CL](https://arxiv.org/abs/2603.06290?context=cs.CL)\n\n### References \u0026 Citations\n\n- [Google Scholar](https://scholar.google.com/scholar_lookup?arxiv_id=2603.06290)\n- [Semantic Scholar](https://api.semanticscholar.org/arXiv:2603.06290)\n\nexport BibTeX citation\n\n### Bookmark\n\n \n\nBibliographic Tools\n\n# Bibliographic and Citation Tools\n\nBibliographic Explorer Toggle\n\nBibliographic Explorer ([What is the Explorer?](https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer))\n\nConnected Papers Toggle\n\nConnected Papers ([What is Connected Papers?](https://www.connectedpapers.com/about))\n\nLitmaps Toggle\n\nLitmaps ([What is Litmaps?](https://www.litmaps.co/))\n\nscite.ai Toggle\n\nscite Smart Citations ([What are Smart Citations?](https://www.scite.ai/))\n\nCode, Data, Media\n\n# Code, Data and Media Associated with this Article\n\nalphaXiv Toggle\n\nalphaXiv ([What is alphaXiv?](https://alphaxiv.org/))\n\nLinks to Code Toggle\n\nCatalyzeX Code Finder for Papers ([What is CatalyzeX?](https://www.catalyzex.com/))\n\nDagsHub Toggle\n\nDagsHub ([What is DagsHub?](https://dagshub.com/))\n\nGotitPub Toggle\n\nGotit.pub ([What is GotitPub?](http://gotit.pub/faq))\n\nHuggingface Toggle\n\nHugging Face ([What is Huggingface?](https://huggingface.co/huggingface))\n\nLinks to Code Toggle\n\nPapers with Code ([What is Papers with Code?](https://paperswithcode.com/))\n\nScienceCast Toggle\n\nScienceCast ([What is ScienceCast?](https://sciencecast.org/welcome))\n\nDemos\n\n# Demos\n\nReplicate Toggle\n\nReplicate ([What is Replicate?](https://replicate.com/docs/arxiv/about))\n\nSpaces Toggle\n\nHugging Face Spaces ([What is Spaces?](https://huggingface.co/docs/hub/spaces))\n\nSpaces Toggle\n\nTXYZ.AI ([What is TXYZ.AI?](https://txyz.ai/))\n\nRelated Papers\n\n# Recommenders and Search Tools\n\nLink to Influence Flower\n\nInfluence Flower ([What are Influence Flowers?](https://influencemap.cmlab.dev/))\n\nCore recommender toggle\n\nCORE Recommender ([What is CORE?](https://core.ac.uk/services/recommender))\n\n- Author\n- Venue\n- Institution\n- Topic\n\nAbout arXivLabs\n\n# arXivLabs: experimental projects with community collaborators\n\narXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.\n\nBoth individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.\n\nHave an idea for a project that will add value for arXiv's community? [Learn more about arXivLabs](https://info.arxiv.org/labs/index.html).\n\n \n\n[Which authors of this paper are endorsers?](https://arxiv.org/auth/show-endorsers/2603.06290)| [Disable MathJax](javascript:setMathjaxCookie())([What is MathJax?](https://info.arxiv.org/help/mathjax.html))",
+  "url": "https://arxiv.org/abs/2603.06290v1"
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch"><details>
+<summary>Tool use: **web_fetch**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "EpisTwin knowledge graph grounded neuro-symbolic personal AI semantic triples architecture details"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI](https://arxiv.org/html/2603.06290v1)\n2. [The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI - ADS](https://ui.adsabs.harvard.edu/abs/arXiv:2603.06290)\n3. [[arXiv] EpisTwin: A Knowledge Graph-Grounded N… — AI DAILY](https://sns.style/en/tech/2026/03/10/arxiv-epistwin-a-knowledge-graph-grounded-neuro-symbolic-architecture-for-person-2)\n4. [The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI](https://chatpaper.com/zh-CN/paper/249486)\n5. [PersonalAI: A Systematic Comparison of Knowledge Graph Storage and Retrieval Approaches for Personalized LLM agents](https://arxiv.org/html/2506.17001v2)\n\n# EpisTwin: Knowledge Graph-Grounded Neuro-Symbolic Personal AI\n\n## Architecture Overview\n\nEpisTwin is a neuro-symbolic framework that grounds generative reasoning in a verifiable, user-centric Personal Knowledge Graph (PKG).[1] Rather than treating the LLM as a probabilistic knowledge store, it uses the LLM as a structural architect to populate and reason over the PKG, aligning with Type 3 (Neuro || Symbolic) architecture.[1]\n\n## Semantic Triple Construction\n\nEpisTwin leverages Multimodal Language Models to lift heterogeneous, cross-application data into semantic triples.[1] The PKG construction process, called PKG population, transforms heterogeneous information objects (defined as tuples containing source, structured metadata, and unstructured content) into symbolic triples through specialized functions (Φ_M for metadata and Φ_C for unstructured content).[4] For visual content, a two-step process normalizes non-text inputs to text descriptions using multimodal LLMs, followed by knowledge graph construction functions that extract semantic triples via LLM-based generation and structured parsing.[4]\n\n## Inference and Reasoning\n\nAt inference, EpisTwin enables complex reasoning over the personal semantic graph via an agentic coordinator that combines Graph Retrieval-Augmented Generation with Online Deep Visual Refinement, dynamically re-grounding symbolic entities in their raw visual context.[1][2] The PKG is structured as a directed graph with the user as the central node, ensuring all nodes remain reachable from the user, maintaining consistent epistemic structure.[4]\n\n## Knowledge Organization\n\nEpisTwin applies community detection algorithms (Leiden algorithm) to enhance global consistency by identifying densely connected subgraphs that are re-materialized as new nodes connected via \"in_community\" relationships, each enriched with LLM-generated summaries.[4] This hierarchical structure enables higher-level reasoning and improves retrieval efficiency.\n\n## Evaluation\n\nThe framework introduces PersonalQA-71-100, a synthetic benchmark simulating a realistic user's digital footprint with 71 heterogeneous data streams and 100 complex queries to evaluate performance.[1][4]",
+      "title": "Web search results for query: EpisTwin knowledge graph grounded neuro-symbolic personal AI semantic triples architecture details"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch">
+<details>
+<summary>Tool use: **web_fetch**</summary>
+
+
+Parameters:
+
+```json
+{
+  "url": "https://arxiv.org/html/2603.06290v1"
+}
+```
+Result:
+
+```json
+{
+  "markdown": "The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI \n\nTitle:\n\nDescription:\n\n# The EpisTwin: A Knowledge Graph-Grounded Neuro-Symbolic Architecture for Personal AI\n\nGiovanni Servedio1 Potito Aghilar1 Alessio Mattiace1 Gianni Carmosino1 Francesco Musicco1 Gabriele Conte1 Vito Walter Anelli1 Tommaso Di Noia1\u0026Francesco Maria Donini2 1Politecnico di Bari, 2Università degli Studi della Tuscia {g.conte12, a.mattiace, g.carmosino1}@studenti.poliba.it, {potito.aghilar, giovanni.servedio, vitowalter.anelli, tommaso.dinoia}@poliba.it f.musicco@phd.poliba.it, donini@unitus.it\n\n###### Abstract\n\nPersonal Artificial Intelligence is currently hindered by the fragmentation of user data across isolated silos. While Retrieval-Augmented Generation offers a partial remedy, its reliance on unstructured vector similarity fails to capture the latent semantic topology and temporal dependencies essential for holistic sensemaking. We introduce EpisTwin, a neuro-symbolic framework that grounds generative reasoning in a verifiable, user-centric Personal Knowledge Graph. EpisTwin leverages Multimodal Language Models to lift heterogeneous, cross-application data into semantic triples. At inference, EpisTwin enables complex reasoning over the personal semantic graph via an agentic coordinator that combines Graph Retrieval-Augmented Generation with Online Deep Visual Refinement, dynamically re-grounding symbolic entities in their raw visual context. We also introduce PersonalQA-71-100, a synthetic benchmark designed to simulate a realistic user’s digital footprint and evaluate EpisTwin’s performance. Our framework demonstrates robust results across a suite of state-of-the-art judge models, offering a promising direction for trustworthy Personal AI.\n\n## 1 Introduction\n\nThe promise of Personal Artificial Intelligence is to function as a cognitive extension of the user Balog and Kenter (2019). However, this vision is constrained by the fragmentation of user data Skjæveland et al. (2024); Chakraborty and Sanyal (2023) across an archipelago of isolated applications (e.g., calendars, galleries, document stores). Lacking a unified semantic layer, these silos obscure the latent connections required for holistic sensemaking, preventing effective reasoning about the user’s past, present, and future context. Consider the cognitive burden involved in answering a natural, cross-domain request such as:\n\n###### Example 1 (Sarah call).\n\n”Did Sarah Green call me before or after I arrived at work today?”. Answering this seemingly simple question may require complex reasoning on personal data. For example, if the user was late for work, the system may need to check today’s call log, the start time of the recurring “Work” calendar event, and even notes, photos, or messages that suggest his actual arrival time.\n\nCurrent systems force the user to bridge these silos manually. While Retrieval-Augmented Generation (RAG) Lewis et al. (2020) mitigates this problem by grounding generation in retrieved data, it struggles with “global” sensemaking, as it retrieves fragments based on local semantic overlap rather than the topological and temporal dependencies essential for personal reasoning. Furthermore, the reliance on opaque vector stores poses challenges for data sovereignty: the deterministic “unlearning” of specific facts, a requirement under tightening regulations [2024], is computationally non-trivial in purely dense representations Nguyen et al. (2025).\n\nIn this paper, we introduce EpisTwin (Epistemic Twin), an agentic framework that inverts the standard paradigm: rather than treating the LLM as a probabilistic knowledge store, we use it as a structural architect to populate and reason over a Personal Knowledge Graph (PKG). This decoupling yields an explicit, verifiable, symbolic structure in which knowledge deletions are deterministic. EpisTwin aligns with Type 3 (Neuro || Symbolic) architecture in Kautz’s taxonomy Kautz (2022), defined by a cooperative relationship where the neural component acts as a coroutine rather than a mere subroutine. Initially, Type 3 was conceived as the neural transformation of non-symbolic feedback signals to symbolic inputs for symbolic reasoning. EpisTwin adapts this paradigm for inference-time symbolic and neural reasoning through two uncoupled phases. First, when new unstructured data enter the system, the PKG Constructor performs a neural-to-symbolic transduction, transforming multimodal data into semantic triples to populate the user’s PKG. Second, when the user interacts with the system, the reasoning is conducted directly on the PKG. This phase actively combines symbolic graph operations with neural RAG grounded in the graph’s topology. Differently from standard Type 3 Neuro-Symbolic, EpisTwin leverages both symbolic methods and neural models at inference time to extract new relevant and contextual information (see Section 5.1). Indeed, in the initial neural-to-symbolic transduction, some crucial information may be lost due to the context-unaware nature of the operation. Once the system generates an answer for the user query, EpisTwin Core Agent judges the quality of the response. If the answer is unsatisfactory and the reasoning involves knowledge deriving from non-textual content (e.g., images, audio), the Core Agent triggers the Fallback agent. This approach may cover a wide range of different modalities. Without loss of generality, EpisTwin considers only images in this category. The Fallback Agent exploits its Online Deep Visual Refinement tool, leveraging neural retrieval models to select the most relevant images, referenced in the PKG, to extract precise, context-aware attributes with neural vision models. Additionally, the reliance on symbolic data ensures that deleting a node in the graph permanently excises the information, a guarantee almost impossible with purely neural or dense-vector approaches (see the recent research about unlearning Chen et al. (2021); Yang et al. (2025)). To evaluate our framework, in the scarcity of open benchmarks for personal AI, we introduce PersonalQA-71-100, a curated, privacy-preserving dataset, comprising 7171 heterogeneous personal data streams and 100100 queries with ground-truth answers. Evaluation is conducted using an LLM-as-a-Judge protocol Liu et al. (2023); Lee et al. (2025), enabling automated assessment of semantic correctness across multi-step and multi-modal reasoning tasks. Results show that EpisTwin consistently achieves satisfactory performance, even in scenarios requiring multimodal integration. In summary, this paper makes the following contributions:\n\n•\n\nType 3 Neuro-Symbolic Agentic Framework: EpisTwin unifies PKG construction and agentic reasoning to enable multi-hop question answering over heterogeneous personal data.\n\n•\n\nActive Visual-Symbolic Inference: Our Online Deep Visual Refinement tool recovers details lost during the transduction phase by leveraging symbolic knowledge for query-conditioned, on-the-fly visual analysis.\n\n•\n\nNovel Multimodal Benchmark: We present PersonalQA-71-100, a multimodal dataset of fragmented, realistic personal data (e.g., notes, calendar, images) paired with questions and gold-standard answers.\n\n•\n\nVerifiable Performance Analysis: We adopt a “LLM-as-a-Judge” evaluation protocol to quantify reasoning capabilities. We demonstrate that EpisTwin handles the complexity of cross-domain, multi-step user queries.\n\n- References\n\n## 2 Related Work\n\nGenerative knowledge extraction and graph-based retrieval have seen significant progress, yet current paradigms struggle to connect unstructured perception and symbolic reasoning on personal data. In this section, we analyze prior work on knowledge graph construction, reasoning, personal AI, and data sovereignty to highlight the limitations that motivate an agentic, graph-grounded approach.\n\n##### Knowledge Graph Construction.\n\nLarge Language Models (LLMs) have enabled triple extraction from unstructured text Wei et al. (2023), but recent frameworks (e.g., RAKG Zhang et al. (2025a)) remain predominantly unimodal. They fail to integrate structured logs and visual data essential for a digital twin. Moreover, Human-in-the-Loop strategies Schröder et al. (2022) limit the scalability required for real-time personal intelligence.\n\n##### Personal Knowledge Graphs.\n\nPersonal Knowledge Graphs differ from general KGs, necessitating strict data sovereignty, subjective context, and continuous evolution Balog and Kenter (2019); Skjæveland et al. (2024). The current landscape is characterized by domain-specific fragmentation. Conversational agents Li et al. (2014) and temporal models Sansen et al. (2024) lack a holistic view of the user’s digital ecosystem. Specialized implementations in healthcare Li et al. (2023) and education Ilkou (2022) are constrained by static ontologies, and restricted to specific domains.\n\n##### Graph-based Reasoning.\n\nTo ensure logical validity, frameworks like Think-on-Graph (ToG) Sun et al. (2024) and FiDeLiS Sui et al. (2025) constrain LLM generation to valid graph traversals via beam search or logical entailment. However, these methods rely on a static, complete knowledge base. Graph Retrieval-Augmented Generation (GraphRAG) architectures aim to overcome the “local myopia” of vector-based RAG Lewis et al. (2020) by exploiting structural dependencies. Systems such as QA-GNN Yasunaga et al. (2021) and recent PKG-based assistants Liu et al. (2024); Zhang et al. (2025b) demonstrate that grounding generation in a graph enhances multi-hop reasoning.\n\n##### Personal AI and Data Sovereignty.\n\nExisting systems are functionally narrow, with PKG adoption limited to specific domains Carbonaro et al. (2024). Moreover, compliance with tightening regulations European Union (2024); People’s Republic of China (2021); State of California (2020) requires deterministic data removal, a non-trivial challenge for neural unlearning Nguyen et al. (2025). EpisTwin addresses this by strictly decoupling reasoning from storage, ensuring data sovereignty is an architectural guarantee rather than a probabilistic behavior.\n\n## 3 Problem Definition and Preliminaries\n\nUser information is inherently fragmented, scattered across isolated sources that range from structured calendar logs to unstructured document repositories. This compartmentalization obscures the latent semantic connections required for intelligent assistance. Formally, let 𝒰\\mathcal{U} denote the set of users and 𝒮={S1,S2,…,Sn}\\mathcal{S}=\\{S_{1},S_{2},\\dots,S_{n}\\} be the set of available Data Sources. We define the atomic unit of information generated by these sources as an Information Object.\n\n###### Definition 1 (Information Object).\n\nAn Information Object is the atomic unit of digital information, formally defined as a tuple ι=(σ,μ,c)\\iota=(\\sigma,\\mu,c), where:\n\n•\n\nσ∈𝒮\\sigma\\in\\mathcal{S} denotes the Source Provenance, where 𝒮\\mathcal{S} represents the finite set of distinct data silos (e.g., Calendar, Gallery) from which the data originates;\n\n•\n\nμ\\mu represents the Structured Metadata (e.g., timestamps, file paths), defined as a set of explicit attributes, key-value pairs, such that μ⊧ℳσ\\mu\\models\\mathcal{M}_{\\sigma}, where ℳσ\\mathcal{M}_{\\sigma} denotes the schema governing valid metadata for the provenance σ\\sigma;\n\n•\n\nc∈𝒞∪{∅}c\\in\\mathcal{C}\\cup\\{\\emptyset\\} denotes the optional Unstructured Payload, where 𝒞σ\\mathcal{C}_{\\sigma} represents the domain of raw data made available by σ\\sigma (e.g., image tensors ℝH×W×3\\mathbb{R}^{H\\times W\\times 3}).\n\n###### Example 2.\n\nLet us imagine a photo of Sagrada Familia in the photo gallery as an Information Object ιph=(σph,μph,cph)\\iota_{\\text{ph}}=(\\sigma_{\\text{ph}},\\mu_{\\text{ph}},c_{\\text{ph}}), where σph\\sigma_{\\text{ph}} is the Photos App on the user’s device, μph\\mu_{\\text{ph}} contains the metadata key-value pairs (e.g. time: 10:05, date: 12-Jun-2025) and cphc_{\\text{ph}} represents the raw RGB pixel data.\n\nThe Information Objects that are owned by or pertaining to a user uu are considered their Personal Knowledge.\n\n###### Definition 2 (Personal Knowledge).\n\nThe Personal Knowledge 𝒦u\\mathcal{K}_{u} for a specific user u∈𝒰u\\in\\mathcal{U} is the heterogeneous set of all Information Objects associated with uu, 𝒦u={ι1,ι2,…,ιm}\\mathcal{K}_{u}=\\{\\iota_{1},\\iota_{2},\\dots,\\iota_{m}\\}, where each ιi\\iota_{i} is an Information Object generated by a source σ∈𝒮\\sigma\\in\\mathcal{S}.\n\n###### Remark 1.\n\nAssociating an object ι\\iota with user uu implies that ι\\iota is either explicitly generated by uu (ownership) or semantically refers to uu (participation), making 𝒦u\\mathcal{K}_{u} user-centric.\n\nThe core challenge lies in mapping this unstructured and disconnected set 𝒦u\\mathcal{K}_{u} into a coherent epistemic structure that enables a reasoning agent; this implies two distinct but interdependent sub-challenges:\n\n1.\n\nPersonal Knowledge Graph (PKG) Construction: The process to map the Information Objects into a PKG, converting implicit relations into explicit triples (PKG Population in Skjæveland et al. (2024));\n\n2.\n\nPersonalized Answering: The inference process to answer a natural language query exploiting the knowledge in the PKG (PKG Utilization in Skjæveland et al. (2024)). Here, this step adopts a neuro-symbolic approach to cross-reference the heterogeneous user data, operation impossible with the sole symbolic reasoning.\n\n### 3.1 Personal Knowledge Graph (PKG)\n\nGeneral Knowledge Graphs (KGs) serve as repositories for universal truths and globally significant entities. Personal Knowledge Graphs (PKGs) represent the subjective context of a single individual, including only entities and relationships relevant to that specific user. Balog and Kenter (2019) originally characterized the PKG through a structural lens, defining it as a “spiderweb” layout where the user acts as the central node connected to every other entity. Skjæveland et al. (2024) subsequently argued that the defining feature is not topology but data sovereignty, viewing the PKG as a resource where the user is the sole administrator with exclusive access rights. We synthesize these complementary perspectives in our framework. The proposed model enforces administrative ownership of Skjæveland et al. (2024) while simultaneously retaining the user as the central anchor for all stored information as required by Balog and Kenter (2019).\n\n###### Definition 3 (Personal Knowledge Graph).\n\nA Personal Knowledge Graph 𝒢\\mathcal{G} is defined by a tuple (𝒩,ℛ,𝒯)(\\mathcal{N},\\mathcal{R},\\mathcal{T}), where: 𝒩=ℰ⊔ℒ⊔ℬ\\mathcal{N}=\\mathcal{E}\\sqcup\\mathcal{L}\\sqcup\\mathcal{B} is the set of nodes, composed of the disjoint union of (i) Entities ℰ\\mathcal{E} (containing the special entity uu representing the owner of the Knowledge Graph), (ii) Literals ℒ\\mathcal{L}, and (iii) Blank Nodes ℬ\\mathcal{B}; ℛ\\mathcal{R} is a set of relations, 𝒯⊆(ℰ∪ℬ)×ℛ×(𝒩/{u})\\mathcal{T}\\subseteq(\\mathcal{E}\\cup\\mathcal{B})\\times\\mathcal{R}\\times(\\mathcal{N}/\\{u\\}) is a set of triples, where each (h,r,t)∈𝒯(h,r,t)\\in\\mathcal{T} represents a fact where hh is the head, rr is the relation, and tt is the tail. Structurally, 𝒢\\mathcal{G} is rooted at uu, and satisfies the reachability constraint: ∀v∈{t∣∃h,r:(h,r,t)∈𝒯}\\forall v\\in\\{t\\mid\\exists h,r:(h,r,t)\\in\\mathcal{T}\\}, there is a path from uu to vv, denoted by u↝vu\\rightsquigarrow v.\n\n### 3.2 KG Construction from Text\n\nIn this study, we leverage the generative capabilities of LLMs for Knowledge Graph Construction (KGC) Zhong et al. (2023), thus enabling the automated transformation of natural language into structured symbolic representations. For the unstructured non-textual content cc, we assume there exists an operator that transforms an unstructured content cc into its textual representation c^\\hat{c} (later defined in Section 4.1).\n\n###### Definition 4 (KG Construction Function).\n\nLet c^\\hat{c} be the text derived from the unstructured content of an Information Object ι\\iota. We define the KG Construction Function fKGCf_{\\text{KGC}} as a mapping that extracts a set of semantic triples 𝒯c\\mathcal{T}_{c} from a sequence generated by an LLM parameterized by θ\\theta. Formally, 𝒯c=ξ​(y)\\mathcal{T}_{c}=\\xi(y) where yy is the token sequence sampled from the conditional distribution of the LLM y∼Pθ(⋅∣c^)y\\sim P_{\\theta}(\\cdot\\mid\\hat{c}), and ξ\\xi is a parsing function that maps yy to a set of triples {(h,r,t)}⊆ℰ×ℛ×(ℰ∪ℒ)\\{(h,r,t)\\}\\subseteq\\mathcal{E}\\times\\mathcal{R}\\times(\\mathcal{E}\\cup\\mathcal{L}).\n\nThe extraction is not a deterministic parsing task, but a dynamic inference process where fKGCf_{\\text{KGC}} takes into account the specific semantic nuances of the source δ\\delta to capture the heterogeneity typical of personal unstructured data.\n\n### 3.3 Thematic Context Extraction via Community Detection\n\nPKGs may lack explicit triples for semantically cohesive concepts (e.g., a link between an Event and its reminder Alarm). To uncover these latent associations, we employ a Community Detection Algorithm Fortunato (2010).\n\n###### Definition 5 (Community Structure).\n\nGiven the Personal Knowledge Graph 𝒢=(𝒩,ℛ,𝒯)\\mathcal{G}=(\\mathcal{N},\\mathcal{R},\\mathcal{T}), a Community Structure is defined as a collection of clusters 𝒫={P1,P2,…,Pk}\\mathcal{P}=\\{P_{1},P_{2},\\dots,P_{k}\\}, with each cluster P⊆𝒩P\\subseteq\\mathcal{N}. The quality of this thematic collection is evaluated via Modularity objective QQ Fortunato (2010). Maximizing QQ yields communities where the intra-cluster topological density significantly exceeds that of a random null model, implying strong thematic coherence.\n\n##### Leiden Algorithm.\n\nThe algorithm optimizes QQ through an iterative process composed by local moving (greedy node reassignment), refinement (splitting sub-optimal clusters to ensure connectivity), and aggregation (coarsening the network). To compute PP, we select Leiden Traag et al. (2019) over the classic Louvain Blondel et al. (2008) method because it guarantees the connectivity of the resulting communities. In a personal knowledge context, a disconnected community (e.g., a “Work” cluster containing two unrelated sub-graphs) would represent a failure in semantic disambiguation. Each identified community is reified in the graph as a new entity connected to all the members of the community.\n\n### 3.4 Graph Retrieval-Augmented Generation\n\nWe adopt Graph Retrieval-Augmented Generation (GraphRAG) Lewis et al. (2020); Edge et al. (2024) as the retrieval mechanism to enable reasoning over the PKG. Unlike standard RAG, which treats the LLM as a stochastic processor of disjoint text chunks, GraphRAG leverages the structural dependencies of the knowledge graph to capture relational context. Following Peng et al. (2025), the generation process decomposes into two stages: a retriever selecting relevant subgraphs, and a generator that synthesizes responses conditioned on this evidence. Given a user query qq and the PKG 𝒢\\mathcal{G}, the answer aa is generated through the process fG​-​R​A​G​(q,𝒢;θ,ϕ)f_{G\\text{-}RAG}(q,\\mathcal{G};\\theta,\\phi) defined as the sampling a∼Pϕ​(a|q,𝒢∗)⋅Pθ​(𝒢∗|q,𝒢)a\\sim P_{\\phi}(a|q,\\mathcal{G^{*}})\\cdot P_{\\theta}(\\mathcal{G^{*}}|q,\\mathcal{G}), where:\n\n•\n\nPθ​(𝒢∗|q,𝒢)P_{\\theta}(\\mathcal{G^{*}}|q,\\mathcal{G}) is the retriever, selecting the optimal subgraph 𝒢∗⊆𝒢\\mathcal{G^{*}}\\subseteq\\mathcal{G} via topological operators (e.g., community clusters, ego-networks);\n\n•\n\nPϕ​(a|q,𝒢∗)P_{\\phi}(a|q,\\mathcal{G^{*}}) is an LLM with parameters ϕ\\phi generating the response aa conditioned on the retrieved subgraph.\n\n### 3.5 LLM-based Agents\n\nStatic execution flows often lack the flexibility to disentangle ambiguous user queries or synthesize insights from complex sets of triples in the PKG. To bridge this gap, we employ Agents powered by Large Language Models (LLMs) Yao et al. (2023); Schick et al. (2023) to orchestrate adaptive reasoning over information-dense contexts. We define the agent 𝒜\\mathcal{A} as a tuple (πθ,Σ,Λ)(\\pi_{\\theta},\\Sigma,\\Lambda), where πθ\\pi_{\\theta} is a decision policy parameterized by the LLM, Σ\\Sigma is the dynamic state space, and Λ\\Lambda is a set of executable functional operators. The reasoning proceeds as a discrete control loop. At step tt, the agent observes the current state st∈Σs_{t}\\in\\Sigma, defined as st=(q,ℋt)s_{t}=(q,\\mathcal{H}_{t}), where qq is the initial query and ℋt\\mathcal{H}_{t} represents the history of thoughts and observations (the cognitive trajectory). Based on sts_{t}, the policy samples an action at∼πθ​(a|st)a_{t}\\sim\\pi_{\\theta}(a|s_{t}), where at∈Λa_{t}\\in\\Lambda.\n\n## 4 Epistemic Twin Constructor\n\nThe Epistemic Twin Constructor implements the PKG population task described by Skjæveland et al. (2024). It projects each Information Object ι=(σ,μ,c)∈𝒦u\\iota=(\\sigma,\\mu,c)\\in\\mathcal{K}_{u} into the user’s PKG. The graph 𝒢u\\mathcal{G}_{u} is initialized with ℰ={u}\\mathcal{E}=\\{u\\} and iteratively expanded when each ι\\iota is processed.\n\n### 4.1 PKG Population\n\nWe model the PKG Population Task as an update function Ψ\\Psi that transitions the graph from state 𝒢uk\\mathcal{G}^{k}_{u} to 𝒢uk+1\\mathcal{G}^{k+1}_{u} by merging the current graph with the new subgraph, containing the triples extracted from the information object ιk+1\\iota^{k+1}:\n\n| 𝒢uk+1=Ψ​(𝒢uk,ιk+1)=𝒢uk⊕(Φℳ​(μ)∪Φ𝒞​(c))\\mathcal{G}^{k+1}_{u}=\\Psi(\\mathcal{G}^{k}_{u},\\iota^{k+1})=\\mathcal{G}^{k}_{u}\\oplus\\left(\\Phi_{\\mathcal{M}}(\\mu)\\cup\\Phi_{\\mathcal{C}}(c)\\right) | (1) |\n| --- | --- |\n\nwhere Φℳ\\Phi_{\\mathcal{M}} represents a deterministic translation of structured metadata μ\\mu into a knowledge graph, Φ𝒞\\Phi_{\\mathcal{C}} denotes the creation of a knowledge graph from the unstructured content cc, and ⊕\\oplus is a merge operator which joins the newly computed subgraph to 𝒢uk\\mathcal{G}_{u}^{k}. See a visualization of this process in Figure 1.\n\nFigure 1: PKG population when the Information Object is a photo: triples are extracted from both metadata and visual content.\n\n#### 4.1.1 Metadata triples extraction - Φℳ\\Phi_{\\mathcal{M}} function\n\nLet 𝕄=𝒦×𝒱\\mathbb{M}=\\mathcal{K}\\times\\mathcal{V} be the space of all possible metadata entries, and let 𝕋=𝒩×ℛ×(ℰ∪ℒ)\\mathbb{T}=\\mathcal{N}\\times\\mathcal{R}\\times(\\mathcal{E}\\cup\\mathcal{L}) be the universe of valid symbolic triples (consistent with the domain of 𝒯\\mathcal{T} in Section 3.1). We formulate Φℳ\\Phi_{\\mathcal{M}} as the functional composition Φℳ=Φℳ2∘Φℳ1\\Phi_{\\mathcal{M}}=\\Phi_{\\mathcal{M}_{2}}\\circ\\Phi_{\\mathcal{M}_{1}}. The first component Φℳ1:2𝕄→2𝕋\\Phi_{\\mathcal{M}_{1}}:2^{\\mathbb{M}}\\rightarrow 2^{\\mathbb{T}}, is a mapping from the power set of metadata to the power set of triples:\n\n| Φℳ1​(μ)={(nι,ρ​(k),λ​(v))∣(k,v)∈μ}\\Phi_{\\mathcal{M}_{1}}(\\mu)=\\Big\\{\\big(n_{\\iota},\\rho(k),\\lambda(v)\\big)\\mid(k,v)\\in\\mu\\Big\\} | (2) |\n| --- | --- |\n\nwhere nι∈𝒩n_{\\iota}\\in\\mathcal{N} is the node for ι\\iota, ρ\\rho maps keys to predicates, and λ\\lambda casts values into entities or literals. Finally, Φℳ2\\Phi_{\\mathcal{M}_{2}} transforms the triples extracted from ι\\iota into a knowledge graph.\n\n#### 4.1.2 Unstructured Triples Extraction: the Φ𝒞\\Phi_{\\mathcal{C}} function\n\nLet 𝒞\\mathcal{C} denote the space of unstructured content, including textual and visual inputs. The operator Φ𝒞:𝒞→𝒢\\Phi_{\\mathcal{C}}:\\mathcal{C}\\rightarrow\\mathcal{G} maps a content item c∈𝒞c\\in\\mathcal{C} to a knowledge graph by extracting symbolic facts and linking them to their source node nιn_{\\iota}.\n\n##### Textual Normalization.\n\nTo enable uniform symbolic processing across modalities, we first define a normalization operator η:𝒞→𝒞text\\eta:\\mathcal{C}\\rightarrow\\mathcal{C}_{\\text{text}}, where 𝒞text\\mathcal{C}_{\\text{text}} is the space of textual representations. Without loss of generality, in this paper, we limit the scope of non-textual unstructured content to images. The operator η\\eta is defined as\n\n| η​(c)={cif ​c∈𝒞text,τ​(c)if ​c∈𝒞vis,\\eta(c)=\\begin{cases}c\u0026\\text{if }c\\in\\mathcal{C}_{\\text{text}},\\\\ \\tau(c)\u0026\\text{if }c\\in\\mathcal{C}_{\\text{vis}},\\end{cases} |\n| --- |\n\nwhere 𝒞vis\\mathcal{C}_{\\text{vis}} denotes the space of visual content and τ\\tau is a captioning operator. For visual inputs, τ\\tau is implemented using a multimodal language model parameterized by ω\\omega, which induces a conditional distribution over textual descriptions τ(c)∼Pϕ(⋅∣c,promptvis)\\tau(c)\\sim P_{\\phi}(\\cdot\\mid c,\\textit{prompt}_{\\text{vis}}), where promptvis\\textit{prompt}_{\\text{vis}} is a dense captioning prompt. In practice, a single realization is used as the normalized textual representation.\n\n##### Triple Extraction and Graph Integration.\n\nGiven a textual representation c^=η​(c)\\hat{c}=\\eta(c), a knowledge graph construction operator fKGCf_{\\text{KGC}}, defined in Section 3.2, maps text to a set of symbolic triples 𝒞text→2ℰ×ℛ×(ℰ∪ℒ)\\mathcal{C}_{\\text{text}}\\rightarrow 2^{\\mathcal{E}\\times\\mathcal{R}\\times(\\mathcal{E}\\cup\\mathcal{L})}.\n\nThe triples extracted with fKGCf_{\\text{KGC}} are transformed into a knowledge graph 𝒢c=Φ𝒞​(c)\\mathcal{G}_{c}=\\Phi_{\\mathcal{C}}(c) and integrated into the PKG via Ψ​(𝒢,𝒢c)\\Psi\\!\\left(\\mathcal{G},\\mathcal{G}_{c}\\right). The sequential application of captioning and symbolic extraction, c→𝜂c^→fKGC𝒢cc\\xrightarrow{\\;\\eta\\;}\\hat{c}\\xrightarrow{\\;f_{\\text{KGC}}\\;}\\mathcal{G}_{c}, constitutes a Visual–Symbolic Transduction process, whereby raw perceptual inputs are projected into the PKG.\n\n### 4.2 Community Detection as PKG Post-processing\n\nAs the PKG is populated with high-density, granular triples, the resulting topology often suffers from structural dispersion, hindering effective global sensemaking, particularly as the graph scales. To mitigate this, we implement a post-processing routine for detecting thematic communities, executed after each update of 𝒢u\\mathcal{G}_{u}. Figure 2 shows how thematic communities could be integrated over the PKG topology. We utilize the Leiden algorithm to identify a Community Structure 𝒫={P1,…,Pk}\\mathcal{P}=\\{P_{1},\\dots,P_{k}\\} (as defined in Section 3.3), optimizing for the modularity objective. Then we reify them into the graph as distinct nodes that serve as high-level access points for reasoning. We extend the original PKG topology 𝒢u=(𝒩,ℛ,𝒯)\\mathcal{G}_{u}=(\\mathcal{N},\\mathcal{R},\\mathcal{T}) to an augmented graph 𝒢u′=(𝒩′,ℛ′,𝒯′)\\mathcal{G}^{\\prime}_{u}=(\\mathcal{N}^{\\prime},\\mathcal{R}^{\\prime},\\mathcal{T}^{\\prime}) via the following transformation:\n\n| 𝒩′\\displaystyle\\mathcal{N}^{\\prime} | =𝒩∪{nP∣P∈𝒫}\\displaystyle=\\mathcal{N}\\cup\\{n_{P}\\mid P\\in\\mathcal{P}\\} | (3) |\n| --- | --- | --- |\n| ℛ′\\displaystyle\\mathcal{R}^{\\prime} | =ℛ∪{in_community}\\displaystyle=\\mathcal{R}\\cup\\{\\texttt{in\\_community}\\} | (4) |\n| 𝒯′\\displaystyle\\mathcal{T}^{\\prime} | =𝒯∪⋃P∈𝒫{(n,in_community,nP)∣n∈P}\\displaystyle=\\mathcal{T}\\cup\\bigcup_{P\\in\\mathcal{P}}\\{(n,\\texttt{in\\_community},n_{P})\\mid n\\in P\\} | (5) |\n\nwhere nPn_{P} is a Community Node denoting the cluster P⊆𝒩P\\subseteq\\mathcal{N}.\n\n##### Generative Summarization.\n\nTo enable semantic reasoning over these structures, each community node nPn_{P} is enriched with a generated summary SPS_{P}, which synthesizes the information contained within the subgraph induced by the community. We define the induced subgraph topology 𝒯P\\mathcal{T}_{P} as the subset of triples strictly contained within the cluster:\n\n| 𝒯P={(h,r,t)∈𝒯∣h∈P∧t∈P}\\mathcal{T}_{P}=\\{(h,r,t)\\in\\mathcal{T}\\mid h\\in P\\land t\\in P\\} | (6) |\n| --- | --- |\n\nTo generate the summary, we introduce the Generative Summarization Operator fSUMf_{\\text{SUM}}. Since the underlying mechanism is a Large Language Model, the output is obtained by sampling from a conditional distribution. Formally:\n\n| SP=fSUM(P,𝒯P)whereSP∼Pγ(⋅∣lin(P,𝒯P))S_{P}=f_{\\text{SUM}}(P,\\mathcal{T}_{P})\\quad\\text{where}\\quad S_{P}\\sim P_{\\gamma}(\\cdot\\mid\\text{lin}(P,\\mathcal{T}_{P})) | (7) |\n| --- | --- |\n\nHere, PγP_{\\gamma} represents the LLM parameterized by γ\\gamma, and lin​(⋅)\\text{lin}(\\cdot) is a linearization function that serializes the graph elements (nodes and triples) into a textual prompt context.\n\nFigure 2: Communities over the PKG: (a) The topologically disjoint entities “Alarm” and “Football Match Event” could be grouped into a shared community that reveals an implicit consequentiality, improving reasoning. (b) A macroscopic visualization of a PKG populated by entities, relationships, and thematic communities.\n\n## 5 EpisTwin Reasoning Engine\n\nThe previous sections detailed the construction of the PKG. However, the static graph alone is insufficient for holistic sensemaking. The EpisTwin Reasoning Engine is designed not as a static retrieval pipeline, but as a Cooperative Neuro-Symbolic Orchestrator. Rather than a rigid hierarchy, the system operates as a dynamic state machine that transitions between symbolic reasoning (traversing 𝒢u\\mathcal{G}_{u}) and neural perception (analyzing raw modalities) based on the epistemic confidence of the current state. This architecture ensures that the system maximizes the utility of the verifiable graph structure while adaptively grounding reasoning in raw data when symbolic representations are sparse or ambiguous. The decision to exploit agentic AI is motivated by the potential to enable additional specialized functionalities, such as Health Assistance or Point-of-Interest (PoI) recommendation (e.g., “I am in Paris, recommend a restaurant based on my past dining preferences”).\n\n### 5.1 Agentic Orchestration\n\nWe model the reasoning process as a sequential decision-making problem. The Core Agent ΔCore\\Delta_{\\text{Core}} acts as the primary controller, governed by a policy πθ\\pi_{\\theta} parameterized by a Large Language Model. At time step tt, the system state is defined as st=(q,ℋt)s_{t}=(q,\\mathcal{H}_{t}), where qq is the user query and ℋt\\mathcal{H}_{t} represents the reasoning trajectory (Chain-of-Thought). The agent selects an action at∼πθ​(a|st)a_{t}\\sim\\pi_{\\theta}(a|s_{t}) from a composite action space Λ\\Lambda. This space unifies symbolic tools (e.g., community detection, ego-network expansion) and delegation triggers. To ensure response fidelity, the workflow integrates an Epistemic Verification Module, fVALf_{\\text{VAL}}, which functions as a self-reflection operator. After deriving a candidate reasoning step, the system evaluates semantic sufficiency vt∼Pϕ​(v|q,ℋt∈{Sufficient,Insufficient})v_{t}\\sim P_{\\phi}(v|q,\\mathcal{H}_{t}\\in\\{\\texttt{Sufficient},\\texttt{Insufficient}\\}). If vt=Insufficientv_{t}=\\texttt{Insufficient}, implying that the symbolic graph lacks the granularity to answer qq, the policy πθ\\pi_{\\theta} shifts the reasoning mode. It triggers the Fallback Agent ΔFB\\Delta_{\\text{FB}} not as a subordinate, but as a specialized neural co-routine designed to handle unstructured modalities, effectively expanding the state space beyond the graph’s limits.\n\n### 5.2 Bridging the Gap: Online Visual Refinement\n\nA fundamental challenge in Personal AI is related to the intrinsic contextual nature of user queries. Therefore, the initial transduction ΦC\\Phi_{C} (Section 4.1), compressing high-dimensional sensory data into discrete triples without any context, may inevitably discard content useful in specific contexts. To resolve this, we introduce Online Deep Visual Refinement (tVISt_{\\text{VIS}}). This tool is invoked when the self-reflection step vtv_{t} indicates a deficit in symbolic information regarding visual entities. The refinement process operates via query-driven re-grounding. Let ℰq⊂𝒢u\\mathcal{E}_{q}\\subset\\mathcal{G}_{u} be the set of Information Objects entities topologically relevant to the query (e.g., photos linked to the query topic). The tVISt_{\\text{VIS}} tool executes a dual-phase neural lookup:\n\n1.\n\nContextual Fetching: It retrieves the raw unstructured payload cc (e.g., original image tensors) associated with nodes in ℰq\\mathcal{E}_{q}.\n\n2.\n\nNeural VQA Injection: It employs a Multimodal LLM MvisM_{\\text{vis}} to re-analyze the raw content of the information objects relevant to qq; avis=Agg​({Mvis​(q,c)∣c∈payload​(ℰq)})a_{\\text{vis}}=\\text{Agg}\\left(\\{M_{\\text{vis}}(q,c)\\mid c\\in\\text{payload}(\\mathcal{E}_{q})\\}\\right)\n\nThe output avisa_{\\text{vis}} is a natural language synthesis of visual evidence. Crucially, the extracted insights are treated as ephemeral context, injected into the reasoning history ℋt\\mathcal{H}_{t} for the current session only. This prevents the permanent pollution of the curated PKG with transient, query-specific noise, maintaining the graph as a deterministic source of truth while allowing for flexible, on-demand neural perception.\n\n## 6 Experimental Evaluation\n\nThe evaluation is designed to assess the system’s capabilities in retrieving, connecting, and reasoning on multimodal personal data within a controlled setting. To the best of our knowledge, this is one of the first studies in this direction.\n\n### 6.1 The PersonalQA-71-100 Benchmark\n\nTo validate the proposed architecture, we designed PersonalQA-71-100, a synthetic benchmark composed of two synchronized collections (i.e., data and Question-Answer pairs). The first comprises 71 synthetic Information Objects drawn from seven distinct sources (Calendar, Alarm, Photos, Note, Documents, Phone, and Contacts; see Table 1). The other consists of 100 query-answer samples specifically authored to probe the system’s reasoning limits, structured as triplets (q,at​a​r​g​e​t,aE​T)(q,a_{target},a_{ET}) where the ground truth at​a​r​g​e​ta_{target} only contains strictly needed information to answer the question. The EpisTwin-generated answer aE​Ta_{ET} is released as well. The benchmark is designed to test the architecture across three core cognitive dimensions: Temporal Reasoning, evaluating the resolution of indexical expressions and scheduling conflicts; Cross-Source Reasoning, challenging the synthesis of fragmented information across heterogeneous applications (Table 1); and Fact Retrieval, assessing precision in extracting granular details or summarizing recurring patterns found in the data. To guarantee a robust assessment of temporal logic, the querying time is fixed to Tg​l​o​b​a​l=2025-Sep-01 at 13:00T_{global}=\\text{2025-Sep-01 at 13:00}, and the information objects were created with a creation date previous to Tg​l​o​b​a​lT_{global}.\n\n| App | Events | Images | Notes | Docs | Calls | Alarms | Contacts |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| N. | 20 | 15 | 15 | 9 | 6 | 4 | 2 |\n\n| 1 App | 2 Apps | 3 Apps | 4 Apps |\n| --- | --- | --- | --- |\n| Distribution | 63 | 32 | 4 | 1 |\n\nTable 1: Data distribution in PersonalQA. Top: Distribution of questions across data sources. Bottom: Distribution of questions based on the number of data sources involved in the reasoning process.\n\n### 6.2 Implementation Details\n\nThe EpisTwin architecture is instantiated as a modular system. We employ Neo4j 111https://neo4j.com/ as the underlying graph database, leveraging its native hybrid indexing to support both Graph Retrieval (fG-RAGf_{\\text{G-RAG}}, Section 3.4) via GraphRag Edge et al. (2024) and Knowledge Graph Construction (Section 3.2) via LLM Graph Builder 222https://neo4j.com/labs/genai-ecosystem/llm-graph-builder/. The inference logic is distributed across specialized models: Qwen3-32B Qwen Team (2025) drives the Agents, GPT-OSS OpenAI (2025) handles the symbolic triple extraction (fKGCf_{\\text{KGC}}), Gemini 2.5 Pro Gemini Team, Google (2025) powers GraphRAG reasoning, while LLaMA-4-maverick-17B-128e Abdullah et al. (2025) is the MLLM which manages both visual captioning (τ\\tau) and the Online Deep Visual Refinement tool (tVISt_{\\text{VIS}}), selected for its native capabilities in long-context visual reasoning.\n\n### 6.3 Evaluation Methodology: LLM-as-a-Judge\n\nTo assess the performance of EpisTwin, we employ an automated, reproducible LLM-as-a-Judge framework Lee et al. (2025); Liu et al. (2023). Responses generated by our system (aE​Ta_{ET}) were evaluated against the ground truth (at​a​r​g​e​ta_{target}) to measure reasoning accuracy and retrieval precision.\n\nJudicial Panel Selection. The evaluation relies on Open Source models in authoritative benchmarks, i.e., LLM Stats 333https://llm-stats.com, to guarantee transparency, consistency, and reproducibility Liu et al. (2023). The panel comprises four state-of-the-art architectures: DeepSeek-V3.2 [2025], Qwen3-32B [2025], GPT-OSS-120B [2025], and Kimi K2 Instruct 0905 [2025]. This approach mitigates the single-judge evaluation biases and ensure a comprehensive assessment Arabzadeh and Clarke (2025).\n\nEvaluation Strategy. The evaluation process follows Prometheus Kim et al. (2024) prompting strategy. This methodology enforces a Chain-of-Thought evaluation process and each judge is provided with (i) a prompt containing the user query (qq), (ii) the system’s generated response (aE​Ta_{ET}), and (iii) the ground-truth answer (at​a​r​g​e​ta_{target}). To minimize subjective bias, judges analyze the triplet (q,at​a​r​g​e​t,aE​T)(q,a_{target},a_{ET}) and articulate step-by-step reasoning before assigning a score. The assessment relies on a 5-point Likert scale ranging from 1 (Irrelevant) to 5 (Ground-Truth Aligned). However, considering that subtle score differences may occur from model to model Lee et al. (2025), we normalize scores to focus on semantic utility. Therefore, scores are assigned to three ordinal categories: Positive (Scores 4-5) for accurate responses; Neutral (Score 3) for relevant but incomplete outputs; and Negative (Scores 1-2) for incorrect results.\n\n| Score | DeepSeek | Qwen | GPT | Kimi |\n| --- | --- | --- | --- | --- |\n| 5 (%) | 84 | 70 | 70 | 53 |\n| 4 (%) | 4 | 22 | 14 | 31 |\n| 3 (%) | 5 | 4 | 5 | 10 |\n| 2 (%) | 5 | 4 | 9 | 2 |\n| 1 (%) | 2 | 0 | 2 | 4 |\n| Avg. | 4.63 | 4.58 | 4.41 | 4.27 |\n\nKimiGPTQwenDeepSeek02020404060608080100100Score Dist. (%)Neg.Neu.Pos.\n\nFigure 3: Judicial Panel Evaluation. Left: Distribution of scores assigned by LLM Judges on PersonalQA-71-100 to EpisTwin answers. Right: LLM judgments distribution after vote aggregation.\n\nInter-rater Reliability. To validate the robustness of our automated judicial panel, reporting the score aggregation provides an incomplete overview. Following the recent literature, we rely on a suite of metrics specifically proposed for these purposes. We calculate Percentage Agreement (% Agr.) McHugh (2012) and Quadratic Weighted Cohen’s Kappa (κ\\kappa) Cohen (1968) for ordinal reliability. However, Gwet (2008) noted that this metric is affected by a limitation: when there is high agreement and low variance, the best case, Kappa yields low scores. As a viable alternative metric, they propose Gwet’s AC1 (AC1), that we included in the evaluation for completeness. Finally, we assess monotonic scoring trends using Spearman’s Rank Correlation (ρ\\rho) Spearman (1904) and Krippendorff’s Alpha (α\\alpha) Krippendorff (2011) to evaluate global consistency.\n\n## 7 Results Discussion\n\nThe empirical evaluation on PersonalQA-71-100 validates the core hypothesis of this work: a Neuro-Symbolic architecture, by decoupling reasoning from storage, can achieve high-fidelity “global” sensemaking over fragmented personal data.\n\n### 7.1 Reasoning on Fragmented Heterogeneous Data\n\nAs detailed in Figure 3, EpisTwin consistently achieves high performance across all four judge models, with mean scores ranging from 4.27 (Kimi) to 4.63 (DeepSeek). Notably, the system received a Positive rating (Score 4 or 5) in 87% of the test cases (aggregated across judges, see Figure 3). The significance of this result lies not merely in the high accuracy, but in the structural complexity of the queries it resolves. As shown in Table 1, the benchmark is designed to stress-test cross-silo reasoning, with a significant portion of queries requiring the agent to bridge up to four distinct applications (e.g., correlating Calendar logs, Contact details, and Photo metadata) to derive a single answer. In standard vector-based RAG systems, performance typically degrades as the number of required “hops” increases due to context fragmentation Tao et al. (2025). In contrast, EpisTwin’s robust performance confirms that the PKG successfully preserves the topological dependencies between these isolated sources. By grounding the agent in a unified semantic layer, the system effectively transforms a complex, multi-source retrieval problem into a traversable graph query, maintaining coherence where purely neural approaches often hallucinate.\n\n### 7.2 Robustness of the Evaluation Panel\n\nThe validity of our results relies on the consistency of the “LLM-as-a-Judge” panel. We observe (Table 2) strong inter-rater reliability, with Gwet’s AC1 consistently exceeding 0.84 and Percentage Agreement above 84%. While variance-dependent metrics such as Cohen’s κ\\kappa and Krippendorff’s α\\alpha yield lower values (avg. 0.65), this reflects the paradox of high agreement common in skewed distributions Gwet (2008). Since the system performs correctly on the vast majority of queries, the scarcity of “Negative” labels artificially deflates these metrics. The significant divergence between AC1 (which is robust to trait prevalence) and κ\\kappa confirms that the judges function as a homogeneous entity. This statistical consensus demonstrates that the high scores reflect an objective alignment with the ground truth.\n\nOverall, the statistically robust consensus among state-of-the-art judge models proves that EpisTwin bridges the gap between fragmented personal data and agentic reasoning.\n\n| Comparisons | AC1 | % Agr. | 𝜿\\kappa | 𝝆\\rho |\n| --- | --- | --- | --- | --- |\n| DeepSeek vs Qwen | 0.92 | 93.0 | 0.73 | 0.70 |\n| DeepSeek vs GPT | 0.85 | 87.0 | 0.69 | 0.70 |\n| DeepSeek vs Kimi | 0.84 | 86.0 | 0.66 | 0.60 |\n| Qwen vs GPT | 0.84 | 86.0 | 0.54 | 0.60 |\n| Qwen vs Kimi | 0.86 | 88.0 | 0.70 | 0.69 |\n| GPT vs Kimi | 0.81 | 84.0 | 0.61 | 0.56 |\n\nTable 2: Statistical alignment using Gwet’s AC1 (AC1), Percentage Agreement (%Agr.), Cohen’s κ\\kappa and Spearman’s ρ\\rho.\n\n### 7.3 Limitations\n\nThe prioritization of structural grounding and data sovereignty entails specific trade-offs.\n\n##### Scalability and Model Dependency.\n\nSymbolic transduction of long documents generates high-density subgraphs that can saturate the context window. This complexity necessitates high-capability LLMs for strict schema adherence, as smaller models (\u003c\u003c10B) struggle with these constraints.\n\n##### Latency and Engineering Trade-offs.\n\nThe architecture prioritizes quality and observability through a coordinated ecosystem of specialized components (Population vs. Agentic layers). This design introduces latency, as the Reasoning Engine demands multiple state-space hops to synthesize context, particularly when integrating multimodal data.\n\n## 8 Conclusion\n\nIn this paper, we presented EpisTwin, a Type 3 neuro-symbolic architecture that addresses the critical fragmentation of personal digital footprints. By synthesizing a Personal Knowledge Graph (PKG) from heterogeneous sources and employing Online Deep Visual Refinement, we overcome the local myopia of standard RAG systems. EpisTwin does not merely retrieve text; it actively investigates visual evidence and traverses temporal dependencies, mirroring human cognitive processes to answer complex queries. By grounding generation in a user-controlled PKG, we ensure that the “right to be forgotten” is a technical reality rather than a probabilistic hope; deleting a node in EpisTwin is final and verifiable. Beyond these structural benefits, EpisTwin represents a shift from passive retrieval to active sensemaking. By equipping the system with the agency to perform on-the-fly visual analysis–re-grounding symbolic entities in their raw pixel context only when necessary–we bridge the gap between the rigidity of knowledge graphs and the nuance of multimodal perception. The robust results achieved on our novel PersonalQA-71-100 benchmark validate that this dynamic interplay is essential for handling the complexity of real-world user data. We envision that the future of personal assistants lies in this cooperative neuro-symbolic paradigm, where AI is a powerful reasoning engine, but the user remains the undisputed owner of the map.\n\n## Ethical Statement\n\nThis work prioritizes user agency as an architectural imperative. First, EpisTwin operationalizes the Right to be Forgotten (e.g., GDPR Article 17) through deterministic unlearning; unlike probabilistic neural networks or vector stores where data traces may linger, the deletion of a subgraph in our framework guarantees the immediate, verifiable excision of information. Second, we enforce a strict separation between reasoning and memory. By utilizing frozen Large Language Models and treating user data strictly as ephemeral, inference-time context, we prevent the leakage of sensitive personal information into model weights. Finally, if employed local LMs, EpisTwin ensures physical sovereignty, allowing users to confine their digital footprint to a completely isolated environment.\n\n## References\n\n- A. A. Abdullah, A. Zubiaga, S. Mirjalili, A. H. Gandomi, F. Daneshfar, M. S. Amini, A. S. Mohammed, and H. Veisi (2025) Evolution of meta’s llama models and parameter-efficient fine-tuning of large language models: a survey. CoRR abs/2510.12178. Cited by: §6.2.\n- N. Arabzadeh and C. L. A. Clarke (2025) A human-ai comparative analysis of prompt sensitivity in llm-based relevance judgment. In SIGIR, pp. 2784–2788. Cited by: §6.3.\n- K. Balog and T. Kenter (2019) Personal knowledge graphs: A research agenda. In Proceedings of the 2019 ACM SIGIR International Conference on Theory of Information Retrieval, ICTIR 2019, Santa Clara, CA, USA, October 2-5, 2019, pp. 217–220. Cited by: §1, §2, §3.1.\n- V. D. Blondel, J. Guillaume, R. Lambiotte, and E. Lefebvre (2008) Fast unfolding of communities in large networks. Journal of Statistical Mechanics: Theory and Experiment 2008 (10), pp. P10008. External Links: ISSN 1742-5468, [Link](http://dx.doi.org/10.1088/1742-5468/2008/10/P10008), [Document](https://dx.doi.org/10.1088/1742-5468/2008/10/p10008) Cited by: §3.3.\n- A. Carbonaro, A. Marfoglia, F. Nardini, and S. Mellone (2024) Corrigendum: CONNECTED: leveraging digital twins and personal knowledge graphs in healthcare digitalization. Frontiers Digit. Health 6. Cited by: §2.\n- P. Chakraborty and D. K. Sanyal (2023) A comprehensive survey of personal knowledge graphs. WIREs Data. Mining. Knowl. Discov. 13 (6). Cited by: §1.\n- M. Chen, Z. Zhang, T. Wang, M. Backes, M. Humbert, and Y. Zhang (2021) Graph unlearning. CoRR abs/2103.14991. External Links: [Link](https://arxiv.org/abs/2103.14991), 2103.14991 Cited by: §1.\n- J. Cohen (1968) Weighted kappa: nominal scale agreement provision for scaled disagreement or partial credit. Psychological Bulletin 70 (4), pp. 213–220. External Links: [Link](http://dx.doi.org/10.1037/h0026256), [Document](https://dx.doi.org/10.1037/h0026256) Cited by: §6.3.\n- DeepSeek-AI (2025) DeepSeek-V3.2: pushing the frontier of open large language models. External Links: 2512.02556, [Link](https://arxiv.org/abs/2512.02556) Cited by: §6.3.\n- D. Edge, H. Trinh, N. Cheng, J. Bradley, A. Chao, A. Mody, S. Truitt, and J. Larson (2024) From local to global: A graph RAG approach to query-focused summarization. CoRR abs/2404.16130. Cited by: §3.4, §6.2.\n- European Union (2024) Regulation (eu) 2024/1689 of 13 june 2024 (AI act). External Links: [Link](http://data.europa.eu/eli/reg/2024/1689/oj) Cited by: §1, §2.\n- S. Fortunato (2010) Community detection in graphs. Physics Reports 486 (3–5), pp. 75–174. External Links: ISSN 0370-1573, [Link](http://dx.doi.org/10.1016/j.physrep.2009.11.002), [Document](https://dx.doi.org/10.1016/j.physrep.2009.11.002) Cited by: §3.3, Definition 5.\n- Gemini Team, Google (2025) Gemini 2.5: Pushing the Frontier with Advanced Reasoning, Multimodality, Long Context, and Next Generation Agentic Capabilities. External Links: 2507.06261, [Link](https://arxiv.org/abs/2507.06261) Cited by: §6.2.\n- K. L. Gwet (2008) Computing inter-rater reliability and its variance in the presence of high agreement. British Journal of Mathematical and Statistical Psychology 61 (1), pp. 29–48. External Links: [Link](http://dx.doi.org/10.1348/000711006X126600), [Document](https://dx.doi.org/10.1348/000711006X126600) Cited by: §6.3, §7.2.\n- E. Ilkou (2022) Personal knowledge graphs: use cases in e-learning platforms. In WWW (Companion Volume), pp. 344–348. Cited by: §2.\n- H. A. Kautz (2022) The third AI summer: AAAI robert s. engelmore memorial lecture. AI Mag. 43 (1), pp. 93–104. Cited by: §1.\n- S. Kim, J. Shin, Y. Cho, J. Jang, S. Longpre, H. Lee, S. Yun, S. Shin, S. Kim, J. Thorne, and M. Seo (2024) Prometheus: inducing fine-grained evaluation capability in language models. External Links: 2310.08491, [Link](https://arxiv.org/abs/2310.08491) Cited by: §6.3.\n- Kimi Team, Y. Bai, et al. (2025) Kimi k2: open agentic intelligence. External Links: 2507.20534, [Link](https://arxiv.org/abs/2507.20534) Cited by: §6.3.\n- K. Krippendorff (2011) Computing krippendorff’s alpha-reliability. External Links: [Link](https://api.semanticscholar.org/CorpusID:59901023) Cited by: §6.3.\n- Y. Lee, J. Kim, J. Kim, H. Cho, J. Kang, P. Kang, and N. Kim (2025) CheckEval: a reliable LLM-as-a-judge framework for evaluating text generation using checklists. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing, Suzhou, China, pp. 15771–15798. External Links: [Link](https://aclanthology.org/2025.emnlp-main.796/), [Document](https://dx.doi.org/10.18653/v1/2025.emnlp-main.796), ISBN 979-8-89176-332-6 Cited by: §1, §6.3, §6.3.\n- P. Lewis, E. Perez, A. Piktus, F. Petroni, V. Karpukhin, N. Goyal, H. Küttler, M. Lewis, W. Yih, T. Rocktäschel, S. Riedel, and D. Kiela (2020) Retrieval-augmented generation for knowledge-intensive NLP tasks. In NeurIPS, Cited by: §1, §2, §3.4.\n- J. Li, V. Pandey, and R. Hendawi (2023) A blockchain-based personal health knowledge graph for secure integrated health data management. In ISCC, pp. 1–7. Cited by: §2.\n- X. Li, G. Tür, D. Hakkani-Tür, and Q. Li (2014) Personal knowledge graph population from user utterances in conversational understanding. In SLT, pp. 224–229. Cited by: §2.\n- L. Liu, H. Du, X. Zhang, M. Guo, H. Wang, and M. Wang (2024) A question-answering assistant over personal knowledge graph. In SIGIR, pp. 2708–2712. Cited by: §2.\n- Y. Liu, D. Iter, Y. Xu, S. Wang, R. Xu, and C. Zhu (2023) G-eval: NLG evaluation using gpt-4 with better human alignment. In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, Singapore, pp. 2511–2522. External Links: [Link](https://aclanthology.org/2023.emnlp-main.153/), [Document](https://dx.doi.org/10.18653/v1/2023.emnlp-main.153) Cited by: §1, §6.3, §6.3.\n- M. L. McHugh (2012) Interrater reliability: the kappa statistic. Biochemia Medica 22 (3), pp. 276–282. External Links: [Link](http://dx.doi.org/10.11613/BM.2012.031), [Document](https://dx.doi.org/10.11613/BM.2012.031) Cited by: §6.3.\n- T. T. Nguyen, T. T. Huynh, Z. Ren, P. L. Nguyen, A. W. Liew, H. Yin, and Q. V. H. Nguyen (2025) A survey of machine unlearning. ACM Trans. Intell. Syst. Technol. 16 (5), pp. 108:1–108:46. Cited by: §1, §2.\n- OpenAI (2025) Gpt-oss-120b \u0026 gpt-oss-20b model card. External Links: 2508.10925, [Link](https://arxiv.org/abs/2508.10925) Cited by: §6.2, §6.3.\n- B. Peng, Y. Zhu, Y. Liu, X. Bo, H. Shi, C. Hong, Y. Zhang, and S. Tang (2025) Graph retrieval-augmented generation: a survey. ACM Transactions on Information Systems 44 (2), pp. 1–52. External Links: ISSN 1558-2868, [Link](http://dx.doi.org/10.1145/3777378), [Document](https://dx.doi.org/10.1145/3777378) Cited by: §3.4.\n- People’s Republic of China (2021) Personal Information Protection Law of the People’s Republic of China (PIPL). Note: Presidential Order No. 91Effective November 1, 2021 External Links: [Link](http://en.npc.gov.cn.cdurl.cn/2021-12/29/c_694559.htm) Cited by: §2.\n- Qwen Team (2025) Qwen3 technical report. CoRR abs/2505.09388. Cited by: §6.2, §6.3.\n- H. Sansen, G. Chollet, K. Jokinen, M. I. Torres, J. Boudy, and M. Hariz (2024) Fuzzy dates in personal knowledge graphs and dialogue, the example of ”lifeline”. In HSI, pp. 1–5. Cited by: §2.\n- T. Schick, J. Dwivedi-Yu, R. Dessì, R. Raileanu, M. Lomeli, E. Hambro, L. Zettlemoyer, N. Cancedda, and T. Scialom (2023) Toolformer: language models can teach themselves to use tools. In NeurIPS, Cited by: §3.5.\n- M. Schröder, C. Jilek, and A. Dengel (2022) A human-in-the-loop approach for personal knowledge graph construction from file names. In KGCW@ESWC, CEUR Workshop Proceedings, Vol. 3141. Cited by: §2.\n- M. G. Skjæveland, K. Balog, N. Bernard, W. Lajewska, and T. Linjordet (2024) An ecosystem for personal knowledge graphs: A survey and research roadmap. AI Open 5, pp. 55–69. External Links: [Link](https://doi.org/10.1016/j.aiopen.2024.01.003), [Document](https://dx.doi.org/10.1016/J.AIOPEN.2024.01.003) Cited by: §1, §2, item 1, item 2, §3.1, §4.\n- C. Spearman (1904) The proof and measurement of association between two things. The American Journal of Psychology 15 (1), pp. 72–101. External Links: [Link](http://dx.doi.org/10.2307/1412159), [Document](https://dx.doi.org/10.2307/1412159) Cited by: §6.3.\n- State of California (2020) California Privacy Rights Act of 2020 (CPRA). Note: Proposition 24, codified at Cal. Civ. Code §§ 1798.100 et seq. External Links: [Link](https://vig.cdn.sos.ca.gov/2020/general/pdf/topl.pdf) Cited by: §2.\n- Y. Sui, Y. He, N. Liu, X. He, K. Wang, and B. Hooi (2025) FiDeLiS: faithful reasoning in large language models for knowledge graph question answering. In ACL (Findings), pp. 8315–8330. Cited by: §2.\n- J. Sun, C. Xu, L. Tang, S. Wang, C. Lin, Y. Gong, L. M. Ni, H. Shum, and J. Guo (2024) Think-on-graph: deep and responsible reasoning of large language model on knowledge graph. In ICLR, Cited by: §2.\n- W. Tao, X. Xing, Z. Li, and X. Xu (2025) SAKI-RAG: mitigating context fragmentation in long-document RAG via sentence-level attention knowledge integration. In Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing, Suzhou, China, pp. 1195–1213. External Links: [Link](https://aclanthology.org/2025.emnlp-main.63/), [Document](https://dx.doi.org/10.18653/v1/2025.emnlp-main.63), ISBN 979-8-89176-332-6 Cited by: §7.1.\n- V. A. Traag, L. Waltman, and N. J. van Eck (2019) From louvain to leiden: guaranteeing well-connected communities. Scientific Reports 9 (1). External Links: ISSN 2045-2322, [Link](http://dx.doi.org/10.1038/s41598-019-41695-z), [Document](https://dx.doi.org/10.1038/s41598-019-41695-z) Cited by: §3.3.\n- Y. Wei, Q. Huang, Y. Zhang, and J. T. Kwok (2023) KICGPT: large language model with knowledge in context for knowledge graph completion. In EMNLP (Findings), pp. 8667–8683. Cited by: §2.\n- Z. Yang, J. Han, C. Wang, and H. Liu (2025) Erase then rectify: A training-free parameter editing approach for cost-effective graph unlearning. In AAAI, pp. 13044–13051. Cited by: §1.\n- S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. R. Narasimhan, and Y. Cao (2023) ReAct: synergizing reasoning and acting in language models. In ICLR, Cited by: §3.5.\n- M. Yasunaga, H. Ren, A. Bosselut, P. Liang, and J. Leskovec (2021) QA-GNN: reasoning with language models and knowledge graphs for question answering. In NAACL-HLT, pp. 535–546. Cited by: §2.\n- H. Zhang, J. Si, G. Yan, B. Qi, P. Cai, S. Mao, D. Wang, and B. Shi (2025a) RAKG:document-level retrieval augmented knowledge graph construction. CoRR abs/2504.09823. External Links: [Link](https://doi.org/10.48550/arXiv.2504.09823), [Document](https://dx.doi.org/10.48550/ARXIV.2504.09823), 2504.09823 Cited by: §2.\n- Z. Zhang, Q. Zhang, Z. Fang, J. Li, and Z. Ni (2025b) AI information assistant: an integrated solution for automated knowledge aggregation and personalized recommendation. In 2025 6th International Conference on Big Data \u0026 Artificial Intelligence \u0026 Software Engineering (ICBASE), Vol. , pp. 122–126. External Links: [Document](https://dx.doi.org/10.1109/ICBASE66587.2025.11181301) Cited by: §2.\n- L. Zhong, J. Wu, Q. Li, H. Peng, and X. Wu (2023) A comprehensive survey on automatic knowledge graph construction. ACM Comput. Surv. 56 (4). External Links: ISSN 0360-0300, [Link](https://doi.org/10.1145/3618295), [Document](https://dx.doi.org/10.1145/3618295) Cited by: §3.2.\n\nBETA\n\n[](javascript:toggleReadingMode();)",
+  "url": "https://arxiv.org/html/2603.06290v1"
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch"><details>
+<summary>Tool use: **web_fetch**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: C:\Users\Think\.cursor\projects\e\agent-tools\81c49af0-3efe-42d6-9de2-59a7e6a8e1e2.txt</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+现在我对EpisTwin的完整架构有了深入理解。结合你的需求和现有体系，让我出方案。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="create_plan">
+<details>
+<summary>Tool use: **create_plan**</summary>
+
+
+Parameters:
+
+```json
+{
+  "name": "对话认知积累架构蓝图",
+  "overview": "设计一个完整的\"对话驱动用户认知积累系统\"架构蓝图，借鉴EpisTwin的语义三元组（主体-关系-客体）作为知识存储单元，包含中枢层、提取层、审核层、补丁机制等完整机制设计。",
+  "plan": "# 对话驱动用户认知积累系统——架构蓝图\n\n## 一、系统定位\n\n用户和AI就任意话题对话，系统在对话过程中**持续积累对用户的认知**，形成以语义三元组为基本单元的个人知识图谱（PKG）。每次新对话启动时，系统先加载PKG，AI已经\"认识\"用户。长此以往，知识图谱越来越丰富，AI对用户的理解越来越深。\n\n核心借鉴：EpisTwin（arXiv:2603.06290）的语义三元组架构——将异构数据提升为 &#96;(主体, 关系, 客体)&#96; 三元组，用知识图谱替代纯向量检索，实现87%复杂查询正确率。\n\n---\n\n## 二、四层架构总览\n\n&#96;&#96;&#96;mermaid\ngraph TB\n  subgraph userLayer [\"用户层\"]\n    User[\"用户\"]\n    MainDialog[\"主对话框\"]\n  end\n\n  subgraph hubLayer [\"中枢层\"]\n    Hub[\"中枢协调器\"]\n    CtxMonitor[\"上下文监控器\"]\n    PKGLoader[\"PKG加载器\"]\n  end\n\n  subgraph extractLayer [\"提取层\"]\n    TripleExtractor[\"三元组提取器\"]\n    EntityResolver[\"实体消歧器\"]\n    CommunityDetector[\"社区发现器\"]\n  end\n\n  subgraph reviewLayer [\"审核层\"]\n    QualityGate[\"质量门控\"]\n    ConflictResolver[\"冲突仲裁器\"]\n    VersionController[\"版本控制器\"]\n  end\n\n  subgraph storageLayer [\"存储层\"]\n    PKG[\"个人知识图谱 PKG\"]\n    TripleStore[\"三元组存储\"]\n    CommunityIndex[\"社区索引\"]\n    RawArchive[\"原文存档\"]\n  end\n\n  User --\u003e MainDialog\n  MainDialog --\u003e Hub\n  Hub --\u003e CtxMonitor\n  Hub --\u003e PKGLoader\n  Hub --\u003e TripleExtractor\n  TripleExtractor --\u003e EntityResolver\n  EntityResolver --\u003e CommunityDetector\n  CommunityDetector --\u003e QualityGate\n  QualityGate --\u003e ConflictResolver\n  ConflictResolver --\u003e VersionController\n  VersionController --\u003e PKG\n  PKG --\u003e TripleStore\n  PKG --\u003e CommunityIndex\n  PKG --\u003e RawArchive\n  PKGLoader --\u003e PKG\n&#96;&#96;&#96;\n\n---\n\n## 三、各层详细设计\n\n### 3.1 中枢层（Orchestration Layer）\n\n中枢层是整个系统的\"大脑\"，负责协调主对话和所有提取器。\n\n**组件：**\n\n- **中枢协调器（Hub）**：接收用户指令，分发任务给提取层，汇总审核结果\n- **上下文监控器（Context Monitor）**：实时追踪对话token消耗，接近200K时触发自动总结\n- **PKG加载器（PKG Loader）**：每次对话启动时，从PKG中检索与当前话题相关的子图，注入对话上下文\n\n**指令触发方式（三种模式）：**\n\n| 触发模式 | 触发条件 | 行为 |\n|----------|----------|------|\n| 手动触发 | 用户说\"存入\"/\"记住这个\"/\"入库\" | 中枢立即将当前对话片段发给提取层 |\n| 自动触发 | 上下文监控器检测到接近200K | 中枢启动\"全对话总结+入库\"流程 |\n| 静默触发 | 对话中出现高价值信号（用户表达偏好/决策/观点） | 中枢标记候选片段，对话结束时批量处理 |\n\n**中枢协调器的指令协议：**\n\n&#96;&#96;&#96;\n[指令类型]: extract / summarize / resolve_conflict\n[来源]: 对话片段的行号范围 或 \"全对话\"\n[优先级]: high / normal / low\n[上下文]: 当前话题关键词、已知实体列表\n&#96;&#96;&#96;\n\n### 3.2 提取层（Extraction Layer）\n\n提取层是\"感官系统\"，负责将非结构化对话转化为结构化三元组。\n\n**组件：**\n\n- **三元组提取器（Triple Extractor）**：核心组件，从对话文本中提取语义三元组\n- **实体消歧器（Entity Resolver）**：确保新提取的实体与PKG中已有实体正确对齐（\"老王\"和\"王总\"是同一个人）\n- **社区发现器（Community Detector）**：对新增三元组运行Leiden算法，发现隐含的主题社区\n\n**三元组结构（借鉴EpisTwin，适配对话场景）：**\n\n&#96;&#96;&#96;\n三元组 = (主体, 关系, 客体)\n\n示例：\n  (用户, 偏好, 深度分析而非快速结论)\n  (用户, 决策风格, 先发散后收敛)\n  (用户, 对投标的态度, 重策略轻格式)\n  (N8N, 部署方式, Docker容器@公司 / npm@家里)\n  (数字真我v5, 包含, 九章认知框架)\n  (用户, 在2026-03-25讨论了, EpisTwin三元组架构)\n&#96;&#96;&#96;\n\n**每个三元组的元数据：**\n\n- &#96;source&#96;: 来源对话ID + 行号范围\n- &#96;timestamp&#96;: 提取时间\n- &#96;confidence&#96;: 置信度（0-1）\n- &#96;category&#96;: 画像(A) / 知识(B) / 观点(C)（兼容现有ABC分类）\n- &#96;temporal_scope&#96;: 时效性标记（永久 / 有时效 / 已过期）\n- &#96;provenance_hash&#96;: 原文哈希，用于溯源\n\n**提取策略（三种提取器并行候命）：**\n\n| 提取器 | 职责 | 触发时机 |\n|--------|------|----------|\n| 事实提取器 | 提取客观事实、技术决策、工具配置 | 每次触发 |\n| 画像提取器 | 提取用户偏好、习惯、决策风格、情绪模式 | 每次触发 |\n| 关系提取器 | 提取实体间关系（人-人、人-事、事-事） | 每次触发 |\n\n### 3.3 审核层（Review Layer）\n\n审核层是\"免疫系统\"，防止脏数据进入PKG。\n\n**组件：**\n\n- **质量门控（Quality Gate）**：检查三元组的完整性、置信度、是否有足够证据\n- **冲突仲裁器（Conflict Resolver）**：检测新三元组与已有知识的矛盾，决定更新/共存/拒绝\n- **版本控制器（Version Controller）**：记录每次变更，支持回滚\n\n**质量门控规则：**\n\n- 置信度 \u003c 0.6 的三元组 -\u003e 标记为\"待确认\"，不直接入库\n- 缺少原文溯源的三元组 -\u003e 拒绝\n- 与用户明确否定过的认知矛盾 -\u003e 拒绝并报告\n\n**冲突仲裁策略：**\n\n&#96;&#96;&#96;mermaid\nflowchart TD\n  NewTriple[\"新三元组\"] --\u003e Check{\"与已有三元组冲突?\"}\n  Check --\u003e|\"无冲突\"| DirectAdd[\"直接入库\"]\n  Check --\u003e|\"有冲突\"| CompareTime{\"比较时间戳\"}\n  CompareTime --\u003e|\"新的更近\"| UpdateStrategy{\"冲突类型?\"}\n  CompareTime --\u003e|\"旧的更近\"| KeepOld[\"保留旧的, 新的标记待确认\"]\n  UpdateStrategy --\u003e|\"事实更新 (搬家/换工具)\"| Replace[\"替换旧三元组, 旧的标记expired\"]\n  UpdateStrategy --\u003e|\"观点演变 (态度变化)\"| Coexist[\"两者共存, 标记时间线\"]\n  UpdateStrategy --\u003e|\"矛盾 (逻辑不兼容)\"| Escalate[\"上报用户确认\"]\n&#96;&#96;&#96;\n\n**版本控制机制：**\n\n- 每个三元组有 &#96;version&#96; 字段，修改不删除旧版本，而是标记 &#96;superseded_by&#96;\n- 支持\"时间旅行\"查询：查看某个时间点的PKG状态\n- 定期压缩：超过N个版本的三元组链，压缩为最新+首版\n\n### 3.4 存储层（Storage Layer）\n\n**三层存储（与EpisTwin对齐）：**\n\n- **三元组存储（Triple Store）**：图数据库（Neo4j或本地JSON-LD），存储所有三元组及其关系\n- **社区索引（Community Index）**：Leiden算法产出的主题社区，每个社区有LLM生成的摘要\n- **原文存档（Raw Archive）**：触发入库的原始对话片段，用于溯源和争议仲裁\n\n---\n\n## 四、核心流程\n\n### 4.1 对话启动流程\n\n&#96;&#96;&#96;mermaid\nsequenceDiagram\n  participant U as 用户\n  participant M as 主对话框\n  participant H as 中枢协调器\n  participant L as PKG加载器\n  participant P as PKG\n\n  U-\u003e\u003eM: 开始新对话, 提出话题\n  M-\u003e\u003eH: 话题关键词\n  H-\u003e\u003eL: 请求相关子图\n  L-\u003e\u003eP: 图检索 (关键词 + 实体匹配 + 社区摘要)\n  P--\u003e\u003eL: 相关三元组 + 社区摘要\n  L--\u003e\u003eH: 结构化上下文\n  H--\u003e\u003eM: 注入上下文 (用户画像 + 话题相关知识)\n  M--\u003e\u003eU: AI已带着认知开始对话\n&#96;&#96;&#96;\n\n### 4.2 手动入库流程（用户说\"存入\"）\n\n&#96;&#96;&#96;mermaid\nsequenceDiagram\n  participant U as 用户\n  participant M as 主对话框\n  participant H as 中枢协调器\n  participant E as 提取层\n  participant R as 审核层\n  participant P as PKG\n\n  U-\u003e\u003eM: \"这段存入\"\n  M-\u003e\u003eH: 触发入库指令 + 对话片段\n  H-\u003e\u003eE: 分发给三个提取器\n  E-\u003e\u003eE: 并行提取三元组\n  E-\u003e\u003eE: 实体消歧 (与PKG已有实体对齐)\n  E--\u003e\u003eR: 候选三元组列表\n  R-\u003e\u003eR: 质量门控 + 冲突检测\n  R--\u003e\u003eH: 审核结果 (通过/待确认/拒绝)\n  H--\u003e\u003eP: 通过的三元组入库\n  H-\u003e\u003eE: 社区发现器更新社区结构\n  H--\u003e\u003eM: 反馈给用户 \"已入库N条, M条待确认\"\n  M--\u003e\u003eU: 入库结果\n&#96;&#96;&#96;\n\n### 4.3 200K自动总结流程\n\n&#96;&#96;&#96;mermaid\nsequenceDiagram\n  participant C as 上下文监控器\n  participant H as 中枢协调器\n  participant M as 主对话框\n  participant E as 提取层\n  participant R as 审核层\n  participant P as PKG\n\n  C-\u003e\u003eH: 警告: token已达180K\n  H-\u003e\u003eM: 通知用户 \"即将总结入库\"\n  H-\u003e\u003eE: 全对话提取指令\n  E-\u003e\u003eE: 扫描全对话, 提取所有未入库的三元组\n  E--\u003e\u003eR: 候选三元组列表\n  R-\u003e\u003eR: 批量审核\n  R--\u003e\u003eH: 审核结果\n  H--\u003e\u003eP: 批量入库\n  H-\u003e\u003eH: 生成对话摘要 (关键决策 + 未完成事项)\n  H--\u003e\u003eM: 摘要写入交接备忘\n  M--\u003e\u003eM: 下次对话可从断点继续\n&#96;&#96;&#96;\n\n---\n\n## 五、补丁机制（Patch System）\n\n补丁机制解决\"已入库的知识需要修正\"的问题。\n\n### 5.1 补丁类型\n\n| 补丁类型 | 场景 | 操作 |\n|----------|------|------|\n| 修正补丁 | 用户说\"之前说错了, X其实是Y\" | 找到目标三元组, 创建新版本, 旧版本标记superseded |\n| 删除补丁 | 用户说\"删掉关于X的记录\" | 目标三元组标记deleted, 关联的社区重新计算 |\n| 合并补丁 | 发现两个实体其实是同一个 | 合并实体节点, 重定向所有关系 |\n| 时效补丁 | 某个事实过期了 | 标记temporal_scope = expired, 不删除 |\n\n### 5.2 补丁触发\n\n- **用户主动**：\"纠正一下, ...\"、\"删掉...\"、\"更新...\"\n- **系统检测**：新三元组与旧三元组冲突时, 自动生成补丁候选\n- **定期审计**：周期性扫描有时效标记的三元组, 提醒用户确认是否过期\n\n---\n\n## 六、社区发现与全局语义\n\n借鉴EpisTwin的Leiden算法社区发现：\n\n- 每次PKG更新后, 运行社区发现算法\n- 将密集连接的三元组聚类为\"主题社区\"\n- 每个社区生成LLM摘要（如\"用户的投标策略偏好\"、\"用户的技术栈选择\"）\n- 社区摘要作为高层级检索入口, 解决\"局部检索看不到全局\"的问题\n\n&#96;&#96;&#96;\nPKG结构示意:\n\n  [用户] --偏好--\u003e [深度分析]\n    |                    |\n    |--决策风格--\u003e [先发散后收敛]\n    |                    |\n    └── in_community ──\u003e [社区: 用户认知风格]\n                          摘要: \"用户倾向于先发散探索再收敛决策,\n                                 偏好深度分析, 不接受表面结论...\"\n&#96;&#96;&#96;\n\n---\n\n## 七、关键设计决策\n\n### 7.1 为什么用三元组而不是纯向量\n\n| 维度 | 纯向量(现有) | 语义三元组(本方案) |\n|------|-------------|-------------------|\n| 查询方式 | 语义相似度 | 图遍历 + 语义检索 |\n| 多跳推理 | 弱(上下文碎片化) | 强(沿关系链遍历) |\n| 可解释性 | 黑盒 | 每个结论可溯源到具体三元组 |\n| 数据删除 | 概率性(向量难精确删除) | 确定性(删节点即删知识) |\n| 冲突检测 | 无法检测 | 同一主体-关系的不同客体即冲突 |\n\n### 7.2 与现有体系的关系\n\n本蓝图是**通用架构设计**，不直接改动现有系统。但标注兼容点：\n\n- 现有ABC分类 -\u003e 可作为三元组的 &#96;category&#96; 元数据\n- 现有ChromaDB向量库 -\u003e 可作为三元组文本的辅助检索层（Graph + Vector混合检索）\n- 现有管线（待确认-\u003e复盘-\u003e入库） -\u003e 可作为\"审核层\"的人工审核通路\n- 现有交接备忘 -\u003e 可作为\"200K总结\"的输出目标\n\n### 7.3 静默提取的信号检测\n\n系统如何判断对话中出现了\"值得提取\"的内容（静默触发模式）：\n\n- **偏好信号**：用户表达喜好/厌恶（\"我喜欢...\"、\"别给我...\"）\n- **决策信号**：用户做出选择（\"就用X方案\"、\"放弃Y\"）\n- **认知信号**：用户表达理解/观点（\"我认为...\"、\"本质上是...\"）\n- **纠偏信号**：用户纠正AI（\"不对, 应该是...\"）\n- **情绪信号**：用户表达强烈态度（\"太好了\"、\"这不行\"）\n\n---\n\n## 八、产出物\n\n本蓝图确认后，产出一份完整的架构思路图文档（Markdown），包含上述所有内容的精炼版本，存入知识库。不涉及代码实现。\n",
+  "todos": [
+    {
+      "content": "将确认后的架构蓝图写入vault文件，包含完整的四层架构、流程图、补丁机制、设计决策",
+      "id": "write-blueprint",
+      "status": "pending"
+    }
+  ]
+}
+```
+Additional data:
+
+```json
+{
+  "hasOpenedEditor": true,
+  "planUri": "file:///c%3A/Users/Think/.cursor/plans/%E5%AF%B9%E8%AF%9D%E8%AE%A4%E7%9F%A5%E7%A7%AF%E7%B4%AF%E6%9E%B6%E6%9E%84%E8%93%9D%E5%9B%BE_e2078620.plan.md",
+  "reviewData": {
+    "isShowingInput": false,
+    "selectedOption": "none",
+    "status": "Requested"
+  }
+}
+```
+Result:
+
+```json
+{
+  "rejected": {}
+}
+```
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="create_plan"><details>
+<summary>Tool use: **create_plan**</summary>
+
+</details></tool-use>
+
+---
+
+_**User**_
+
+你先保存下来
+
+---
+
+_**Agent (claude-4.6-opus-max)**_
+
+好的，方案已经保存在计划文件中了：
+
+`c:\Users\Think\.cursor\plans\对话认知积累架构蓝图_e2078620.plan.md`
+
+里面包含了完整的四层架构（中枢层/提取层/审核层/存储层）、三种触发模式、核心流程图、补丁机制、冲突仲裁策略、社区发现机制等所有内容。
+
+你随时可以回来继续推进——比如：
+- 让我把这份蓝图写成正式的架构文档存入vault
+- 对某个层/机制提出修改意见
+- 开始讨论落地实现的技术选型
+
+---
+
+_**User**_
+
+场景模拟不够，如对话框是不是有具体模型？这个模型本身是不是中枢？每段话进去是不是先检索知识库？大多数对话都是无效的，用户说的东西、AI理解、简单的跳过、碎片的需要重组、重组后给用户反向提示词、用户在输入。就这个简短的流程就涉及到多个角色，多个元协议等
+
+---
+
+_**Agent (claude-4.6-opus-max)**_
+
+你说得对。我之前的方案太"架构视角"了，缺少**对话实际发生时的微观流程**——每一句话进来到底经过什么、谁在判断、谁在动作。
+
+让我确认一下你的意思：
+
+1. **主对话框本身就是一个具体模型**（比如Claude/GPT），这个模型既是和用户对话的，也可能本身就承担中枢职能——不是另外一个"中枢"在旁边指挥
+2. **每句话进来的微观流程**才是核心：
+   - 用户说一句话 → 先检索知识库 → 判断这句话有没有价值 → 大多数是无效的跳过 → 碎片的要重组 → 重组后反向给用户确认 → 用户再输入 → 循环
+3. **这个微观流程里涉及多个角色**：谁负责检索、谁负责判断价值、谁负责重组碎片、谁负责生成反向提示词——这些角色之间的协议才是关键
+4. **你要的是把这个"每句话的生命周期"想清楚**，而不是宏观的四层架构图
+
+对吗？
+
+再确认一个关键点：
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question">
+<details>
+<summary>Tool use: **ask_question**</summary>
+
+
+Parameters:
+
+```json
+{
+  "questions": [
+    {
+      "id": "hub_model",
+      "options": [
+        {
+          "id": "same",
+          "label": "主对话模型本身就是中枢——它既和用户聊，也负责判断/调度/检索"
+        },
+        {
+          "id": "separate",
+          "label": "主对话是主对话，中枢是另一个独立的协调器（后台）"
+        },
+        {
+          "id": "think",
+          "label": "这个我没想清楚，你帮我分析利弊"
+        }
+      ],
+      "prompt": "主对话框的模型和中枢的关系？"
+    },
+    {
+      "id": "scope_detail",
+      "options": [
+        {
+          "id": "micro",
+          "label": "每句话的生命周期——从用户输入到AI回复的每一步"
+        },
+        {
+          "id": "turn",
+          "label": "每轮对话的生命周期——一轮可能包含多次确认"
+        },
+        {
+          "id": "both_detail",
+          "label": "两者都要——微观和轮次级都要想清楚"
+        }
+      ],
+      "prompt": "你要的场景模拟的粒度？"
+    }
+  ],
+  "title": "场景模拟的关键确认"
+}
+```
+Additional data:
+
+```json
+{
+  "currentSelections": {
+    "hub_model": [
+      "think"
+    ],
+    "scope_detail": [
+      "both_detail"
+    ]
+  },
+  "freeformTexts": {
+    "hub_model": "",
+    "scope_detail": ""
+  },
+  "status": "submitted"
+}
+```
+Result:
+
+```json
+{
+  "answers": [
+    {
+      "freeformText": "",
+      "questionId": "hub_model",
+      "selectedOptionIds": [
+        "think"
+      ]
+    },
+    {
+      "freeformText": "",
+      "questionId": "scope_detail",
+      "selectedOptionIds": [
+        "both_detail"
+      ]
+    }
+  ]
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question"><details>
+<summary>Tool use: **ask_question**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+好，两个都需要我来分析。让我把"主对话模型和中枢的关系"以及"微观+轮次级流程"都想清楚，然后更新方案。
+
+先说**主对话模型 vs 中枢**的利弊分析：
+
+---
+
+### 方案A：主对话模型本身就是中枢（合一）
+
+**工作方式**：用户面对的那个模型（比如Claude），既负责和用户聊天，也负责判断每句话的价值、调度检索、决定是否触发提取器。
+
+**优点**：
+- 延迟低——不需要在两个模型之间传递信息
+- 上下文完整——中枢看到的就是完整对话，不存在信息损失
+- 实现简单——一个System Prompt里写清楚所有角色协议
+
+**缺点**：
+- **注意力污染**——模型同时要"好好聊天"和"判断价值/调度任务"，两个目标互相干扰
+- **上下文消耗**——中枢的判断逻辑、检索结果、调度指令都占用200K的宝贵空间
+- **角色混乱**——用户看到的回复里可能混入调度信息
+
+### 方案B：中枢是独立的后台协调器（分离）
+
+**工作方式**：用户的每句话先经过一个轻量级的"中枢模型"（可以是同一个API的另一个调用），中枢做判断和调度，然后把结果注入主对话模型的上下文。
+
+**优点**：
+- **职责清晰**——主对话专注对话质量，中枢专注判断和调度
+- **上下文干净**——主对话的200K全部用于对话本身，中枢的判断逻辑不占空间
+- **可替换**——中枢可以用更便宜的模型（判断价值不需要最强模型）
+
+**缺点**：
+- 延迟增加——每句话多一次API调用
+- 信息可能丢失——中枢传给主对话的是摘要，不是原始判断过程
+- 实现复杂度高
+
+### 我的判断：方案C——分层合一
+
+**核心思路**：主对话模型本身承担"轻量中枢"职能（通过System Prompt中的元协议），但**重活（提取、审核、冲突仲裁）交给后台异步处理**。
+
+理由：
+- 判断"这句话有没有价值"是轻量操作，主模型顺手就能做，不需要另一个模型
+- 但"从对话中提取三元组并入库"是重活，必须异步，否则用户等不起
+- 这样主对话的200K主要用于对话，只有少量空间用于中枢判断
+
+---
+
+现在我把完整的微观+轮次级流程想清楚，更新方案。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2">
+<details><summary>Tool use: **read_file_v2** • Read file: c:\Users\Think\.cursor\plans\对话认知积累架构蓝图_e2078620.plan.md</summary>
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="read" data-tool-name="read_file_v2"><details>
+<summary>Tool use: **read_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+现在我来重写方案，补上你要的微观流程和角色协议。
+
+_**Agent (claude-4.6-opus-max)**_
+
+The string to replace was not found in the file.
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+文件太长，直接替换全文内容。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2">
+
+<details><summary>Tool use: **edit_file_v2** • Edit file: c:\Users\Think\.cursor\plans\对话认知积累架构蓝图_e2078620.plan.md</summary>
+
+</details>
+
+</tool-use>
+
+<tool-use data-tool-type="write" data-tool-name="edit_file_v2"><details>
+<summary>Tool use: **edit_file_v2**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+方案已更新为v2，核心补充了你要的内容：
+
+**新增的关键部分：**
+
+1. **中枢模型决策分析**（第二章）——分析了合一/分离/分层合一三种方案，采用方案C：主对话模型承担轻量中枢，重活交给后台异步
+
+2. **每句话的生命周期**（第三章）——从用户输入到AI回复的完整流水线：PKG检索 -> 价值判断（无效/碎片/高价值/指令四条路径）-> 碎片重组+反向确认 -> 候选缓冲区 -> 后台提取 -> 审核入库
+
+3. **角色与元协议**（第四章）——5个角色的完整协议定义：主对话模型元协议、后台提取器元协议、审核仲裁器元协议
+
+4. **真实对话场景模拟**（第六章）——一段投标讨论的完整模拟，展示每句话内部发生了什么：PKG检索命中了什么、价值判断结果、碎片重组过程、"存入"后提取了哪些三元组
+
+你看看这个粒度是否到位，有没有哪个环节还需要深入。
+
+---
+
+_**User**_
+
+这个构想如何才能实现？工作流？IDE中有没类似的强制指令？理论上是不是可以无限对话？假设只是为了数据库知识库的建设
+
+---
+
+_**Agent (claude-4.6-opus-max)**_
+
+你问了三个层面的问题，让我逐个分析。
+
+**我理解你的意思是：**
+
+1. 这个架构蓝图，用什么技术路径才能落地？（工作流？代码？）
+2. Cursor/IDE里有没有类似的机制可以直接复用？（比如强制System Prompt、自动检索）
+3. 如果目标只是"建设知识库"，是不是可以通过某种方式实现"无限对话"——每次快满时总结入库，下次接着聊？
+
+对吗？
+
+先确认一下，然后我去调研具体的实现路径。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question">
+<details>
+<summary>Tool use: **ask_question**</summary>
+
+
+Parameters:
+
+```json
+{
+  "questions": [
+    {
+      "id": "goal",
+      "options": [
+        {
+          "id": "kb_only",
+          "label": "先只做知识库建设——通过对话积累认知，其他机制后面再说"
+        },
+        {
+          "id": "full",
+          "label": "完整落地——包括检索、提取、审核、社区发现全套"
+        },
+        {
+          "id": "explore",
+          "label": "先探索可行性——看看现有工具能做到什么程度"
+        }
+      ],
+      "prompt": "你现在的核心目标是什么？"
+    },
+    {
+      "id": "platform",
+      "options": [
+        {
+          "id": "cursor",
+          "label": "Cursor IDE内（利用现有的SK/Rules/Agent机制）"
+        },
+        {
+          "id": "n8n",
+          "label": "N8N工作流（你已有的自动化平台）"
+        },
+        {
+          "id": "api",
+          "label": "纯代码/API调用（自己写程序）"
+        },
+        {
+          "id": "mix",
+          "label": "混合——能用现有的就用，不够的再写"
+        }
+      ],
+      "prompt": "你想在哪个平台上实现？"
+    }
+  ],
+  "title": "实现路径确认"
+}
+```
+Additional data:
+
+```json
+{
+  "currentSelections": {
+    "goal": [
+      "explore"
+    ],
+    "platform": [
+      "mix"
+    ]
+  },
+  "freeformTexts": {
+    "goal": "",
+    "platform": ""
+  },
+  "status": "submitted"
+}
+```
+Result:
+
+```json
+{
+  "answers": [
+    {
+      "freeformText": "",
+      "questionId": "goal",
+      "selectedOptionIds": [
+        "explore"
+      ]
+    },
+    {
+      "freeformText": "",
+      "questionId": "platform",
+      "selectedOptionIds": [
+        "mix"
+      ]
+    }
+  ]
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="ask_question"><details>
+<summary>Tool use: **ask_question**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+好，目标明确：**先探索可行性，看现有工具能做到什么程度，能用的就用，不够的再写**。
+
+让我并行调研三个方向。
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "Cursor IDE rules skills system prompt auto inject context knowledge base retrieval 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [Cursor Rules: The Complete Guide to .cursorrules and AI Coding Rules (2026)](https://skillsplayground.com/guides/cursor-rules/)\n2. [The Complete Guide to Cursor Rules in 2026 — localskills.sh blog — localskills.sh blog](https://localskills.sh/blog/cursor-rules-guide)\n3. [Skills | Cursor Docs](https://cursor.com/docs/context/commands)\n4. [Agent Skills | Cursor Docs](https://www.trycursor.com/docs/context/skills)\n5. [Dynamic context discovery · Cursor](https://www.cursor.so/blog/dynamic-context-discovery)\n\n# Cursor IDE Rules, Skills System, and Auto-Inject Context (2026)\n\n## Cursor Rules Overview\n\nCursor rules are plain-text instructions that function as a system prompt for Cursor's AI assistant.[1] They customize how the AI writes code by specifying your project's tech stack, coding conventions, patterns to avoid, and desired behavior.[1]\n\n## Rules Architecture\n\nCursor supports three layers of rules:[1]\n\n1. **Global rules** – Set in Cursor Settings, apply to all projects\n2. **Project rules** – &#96;.cursorrules&#96; file at repository root (most common)\n3. **Directory rules** – &#96;.cursor/rules/&#96; folder with multiple &#96;.mdc&#96; files for different code areas\n\nThe &#96;.cursor/rules/&#96; folder approach is now recommended in 2026, allowing you to split rules into focused files with metadata like &#96;globs&#96; patterns and &#96;alwaysApply&#96; settings.[2]\n\n## Skills System\n\nSkills are reusable sets of instructions for multi-step workflows, distinct from rules.[3][4] Key differences:[3]\n\n| Aspect | Rules | Skills |\n|--------|-------|--------|\n| Purpose | Coding guidelines and constraints | Multi-step workflows |\n| Invocation | Always applied (or when globs match) | Invoked on-demand with &#96;/skill-name&#96; |\n| Format | Short to medium instructions | Longer, detailed processes |\n\nSkills are stored as &#96;SKILL.md&#96; files in &#96;.cursor/skills/&#96;, &#96;.agents/skills/&#96;, or &#96;~/.cursor/skills/&#96; directories and automatically discovered by Cursor.[4]\n\n## Auto-Inject Context \u0026 Dynamic Context Discovery\n\nCursor uses **dynamic context discovery** rather than static context — the agent pulls relevant context on-demand instead of loading everything upfront.[5] This approach:[5]\n\n- Improves token efficiency by loading only necessary data\n- Enhances response quality by reducing confusing information\n- Supports Agent Skills open standard for specialized capabilities\n- Efficiently loads only relevant MCP tools and skills based on context",
+      "title": "Web search results for query: Cursor IDE rules skills system prompt auto inject context knowledge base retrieval 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "N8N workflow AI chat memory knowledge graph triple store integration 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: N8N workflow AI chat memory knowledge graph triple store integration 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "LLM infinite conversation memory summarize context window knowledge base accumulation architecture 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "No results found",
+      "title": "Web search results for query: LLM infinite conversation memory summarize context window knowledge base accumulation architecture 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "n8n AI agent memory chat workflow knowledge base vector store 2025 2026"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [Build an n8n AI Agent with Long-Term Memory - n8n.blog](https://n8n.blog/build-an-n8n-ai-agent-with-long-term-memory/)\n2. [n8n AI Agent Node Memory: Complete Setup Guide for 2026 | by Aveloria Thessar | Towards AI](https://pub.towardsai.net/n8n-ai-agent-node-memory-complete-setup-guide-for-2026-a8c0a074df6f)\n3. [Simple Vector Store node documentation | n8n Docs](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.vectorstoreinmemory)\n4. [RAG in n8n | n8n Docs](https://docs.n8n.io/advanced-ai/rag-in-n8n)\n5. [Build an AI Agent Powered by MongoDB Atlas for Memory and Vector Search (+ Free Workflow Template) – n8n Blog](https://blog.n8n.io/build-an-ai-agent-powered-by-mongodb-atlas-for-memory-and-vector-search)\n\n# n8n AI Agent Memory, Chat Workflow \u0026 Vector Store Summary\n\n## Memory Implementation for AI Agents\n\nn8n offers multiple memory types for AI agents to maintain context across conversations.[2] Over 70% of workflow automation users struggle with context retention, making proper memory configuration critical.[2]\n\n**Memory types available:**\n- **Short-term memory**: Window buffer memory for session context[1]\n- **Long-term memory**: Persistent storage using external systems like Google Docs[1]\n- **MongoDB Chat Memory**: Persistent conversation history stored in MongoDB Atlas[5]\n\n## Long-Term Memory Architecture (Google Docs Approach)\n\nA production-style workflow uses:[1]\n- **Google Docs nodes** to retrieve and store long-term memories and user notes\n- **AI Tools Agent node** that orchestrates LLM calls and tool usage\n- **Window buffer memory** for short-term context within sessions\n- Tools to save memories and notes back to persistent storage\n\nThe workflow separates semantic memories (preferences, facts) from general note-taking content.[1]\n\n## Vector Stores \u0026 RAG Knowledge Bases\n\n**Simple Vector Store**: n8n's in-app memory vector store for storing embeddings, suitable for development only. Data is not persistent and is lost on restart.[3]\n\n**MongoDB Atlas Vector Store**: The recommended production solution (May 2025), offering:[5]\n- Plug-and-play embeddings with OpenAI or other models\n- Scalable, fully-managed infrastructure\n- High-performance semantic search\n- Persistent memory across sessions\n- No-code workflow integration\n\n**RAG Implementation**: Vector stores enable Retrieval-Augmented Generation by splitting documents into chunks, converting to vectors via embedding models, and retrieving semantically relevant results.[4]\n\n## 2025-2026 Updates\n\nMongoDB Atlas Vector Store and MongoDB Chat Memory nodes launched as experimental features in May 2025, enabling context-aware AI agents without custom code.[5] A comprehensive setup guide for 2026 addresses the four memory types and their configurations.[2]",
+      "title": "Web search results for query: n8n AI agent memory chat workflow knowledge base vector store 2025 2026"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "LLM conversation memory sliding window summarization infinite chat session knowledge accumulation"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [[2308.15022v2] Recursively Summarizing Enables Long-Term Dialogue Memory in Large Language Models](http://arxiv.org/abs/2308.15022v2)\n2. [[2603.03290] AriadneMem: Threading the Maze of Lifelong Memory for LLM Agents](https://arxiv.org/abs/2603.03290)\n3. [](https://arxiv.org/pdf/2602.11182)\n4. [AI Context Window Management Techniques: Maximizing LLM Memo](https://www.ai-agentsplus.com/blog/ai-context-window-management-2026)\n5. [Toward Stable Long-Term Memory in LLMs: Decay, Drift, and Distributed Continuity | by Frederick Smith | Mar, 2026 | Medium](https://medium.com/@frederick-smith/toward-stable-long-term-memory-in-llms-decay-drift-and-distributed-continuity-93b1db4bcdb2)\n\n# LLM Conversation Memory and Sliding Window Summarization\n\n## Recursive Summarization for Long-Term Memory\n\nRecursive summarization is a key technique for enabling LLMs to maintain long-term dialogue memory. The approach works by having LLMs memorize small dialogue contexts first, then recursively generate new memory using previous memory combined with following contexts.[1] This method enables chatbots to generate consistent responses in long-context conversations and complements both extended context windows (8K, 16K tokens) and retrieval-enhanced systems.[1]\n\n## Knowledge Accumulation Challenges\n\nIn infinite chat sessions, LLM memory systems face two primary challenges: (i) **disconnected evidence**, where multi-hop answers require linking facts distributed across time, and (ii) **state updates**, where evolving information creates conflicts with older static logs.[2] Additionally, memory fragmentation can disrupt logical and temporal relationships within interaction sessions, resulting in degraded reasoning performance.[3]\n\n## Advanced Memory Management Approaches\n\nRecent frameworks address these issues through structured systems:\n\n- **AriadneMem** uses entropy-aware filtering and conflict-aware merging to preserve state transitions as temporal edges, achieving 15.2% improvement in multi-hop question answering while reducing context tokens to only 497.[2]\n\n- **MetaMem** augments memory systems with self-evolving meta-memory that teaches LLMs how to effectively utilize knowledge from scattered memory fragments, improving performance by over 3.6% on reasoning tasks.[3]\n\n## Context Window Management\n\nContext window management involves controlling what information enters prompts given hard limits on text processing. Strategies include sliding windows, summarization, and retrieval-augmented generation to preserve relevant information while controlling costs, latency, and quality.[4]",
+      "title": "Web search results for query: LLM conversation memory sliding window summarization infinite chat session knowledge accumulation"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "Cursor MCP server knowledge base retrieval memory persistence between sessions"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [MCP + MemoClaw — giving your Model Context Protocol tools persistent memory](https://dev.to/anajuliabit/mcp-memoclaw-giving-your-model-context-protocol-tools-persistent-memory-3p0d)\n2. [Memories with Lessons MCP - A persistent knowledge graph server integrated with the Cursor client for cross-session memory and experience accumulation](https://mcp.aibase.com/server/1916341325945085953)\n3. [hpkv-io/memory-mcp-server](https://github.com/hpkv-io/memory-mcp-server)\n4. [Basic Memory - Complete Cursor MCP Server Guide with Installation \u0026 Docs](https://cursormcp.dev/mcp-servers/406-basic-memory)\n5. [Foundation: Building AI Memory with MCP and Cursor | egghead.io](https://egghead.io/foundation-building-ai-memory-with-mcp-and-cursor~duu9m)\n\n# Cursor MCP Server Knowledge Base Retrieval \u0026 Memory Persistence\n\n## Overview\nSeveral MCP (Model Context Protocol) servers enable persistent memory for Cursor by storing knowledge bases that persist between sessions.[1][2][3][4]\n\n## Key Solutions\n\n**MemoClaw MCP**: Provides semantic memory-as-a-service with no integration code needed. It exposes three native MCP tools—&#96;store_memory&#96;, &#96;recall_memories&#96;, and &#96;list_memories&#96;—that work directly with Cursor. Memories use semantic search (not just keyword matching) and can be tagged and importance-scored. Uses wallet-based identity (Ethereum) for authentication with 100 free API calls per wallet.[1]\n\n**Memories with Lessons MCP**: A knowledge graph-based server that stores information as interconnected entities with relationships. Supports error-learning systems and integrates directly with Cursor for cross-session memory accumulation. Uses local JSON storage for persistence.[2]\n\n**HPKV Memory MCP Server**: Provides long-term memory by remembering project structures, coding preferences, and previous explanations across sessions. Integrates via SSE (Server-Sent Events) and requires an HPKV account with API key.[3]\n\n**Basic Memory**: A local-first knowledge management system that builds semantic graphs from Markdown files stored locally. Notes persist as human-readable Markdown files in your project directory, allowing the AI to read and write to the knowledge base across conversations.[4][5]\n\n## Configuration\nAll solutions integrate through Cursor's &#96;mcp.json&#96; configuration file, typically located in the &#96;.cursor&#96; directory, with minimal setup required.[1][3][4][5]",
+      "title": "Web search results for query: Cursor MCP server knowledge base retrieval memory persistence between sessions"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "\"Basic Memory\" MCP Cursor knowledge graph markdown semantic search local setup"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [Basic Memory - Complete Cursor MCP Server Guide with Installation \u0026 Docs](https://cursormcp.dev/mcp-servers/406-basic-memory)\n2. [Add Persistent Memory to Cursor — Context That Survives Sessions - Basic Memory](https://docs.basicmemory.com/integrations/cursor)\n3. [Quickstart: Local - Basic Memory](https://docs.basicmemory.com/start-here/quickstart-local)\n4. [Getting Started](https://docs.basicmemory.com/getting-started/)\n5. [Technical Information - Basic Memory](https://docs.basicmemory.com/reference/technical-information)\n\n# Basic Memory: Local Knowledge Graph for Cursor\n\n**Basic Memory** is a local-first knowledge management system that builds a semantic graph from Markdown files, enabling persistent memory across conversations with LLMs like Claude and Cursor.[1]\n\n## Key Features\n\n- **Semantic Search**: Hybrid keyword and meaning-based search across your knowledge base[3]\n- **Markdown Storage**: All notes saved locally as standard Markdown files in real time[1]\n- **Semantic Graph**: Knowledge organized as entities, observations, and relations that form connections between notes[5]\n- **MCP Integration**: Works through the Model Context Protocol to connect with AI assistants[4]\n\n## Local Setup for Cursor\n\n### Installation[2][3]\n\n&#96;&#96;&#96;bash\n# Recommended: with uv\nuv tool install basic-memory\n\n# Or macOS with Homebrew\nbrew tap basicmachines-co/basic-memory\nbrew install basic-memory\n&#96;&#96;&#96;\n\nRequirements: Python 3.13 or higher\n\n### Configuration[2]\n\nAdd to Cursor's MCP configuration:\n&#96;&#96;&#96;json\n{\n  \"mcpServers\": {\n    \"basic-memory\": {\n      \"command\": \"uvx\",\n      \"args\": [\"basic-memory\", \"mcp\"]\n    }\n  }\n}\n&#96;&#96;&#96;\n\n### Verification[2]\n\nAsk Cursor: \"What Basic Memory tools do you have?\" to confirm the connection.\n\n## Basic Usage[3]\n\n- **Create notes**: \"Create a note about [topic]\"\n- **Search**: \"Find notes about [topic]\"\n- **Continue conversations**: Load context from previous notes across sessions\n- **Default storage**: &#96;~/basic-memory&#96; directory\n\nNotes are searchable with semantic connections that persist across sessions and grow with your project.[2]",
+      "title": "Web search results for query: \"Basic Memory\" MCP Cursor knowledge graph markdown semantic search local setup"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "\"Memories with Lessons\" MCP knowledge graph entities relationships cursor cross-session"
+}
+```
+Result:
+
+```json
+{
+  "isFinal": true,
+  "references": [
+    {
+      "chunk": "Links:\n1. [Memories with Lessons MCP - A persistent knowledge graph server integrated with the Cursor client for cross-session memory and experience accumulation](https://mcp.aibase.com/server/1916341325945085953)\n2. [Memories with Lessons MCP - 跨会话记忆、经验积累，集成Cursor客户端的持久化知识图谱服务器](https://mcp.aibase.cn/server/1916341325945085953)\n3. [T1nker-1220/memories-with-lessons-mcp-server](https://github.com/t1nker-1220/memories-with-lessons-mcp-server)\n4. [Search code, repositories, users, issues, pull requests...](https://github.com/MCP-Mirror/T1nker-1220_memories-with-lessons-mcp-server)\n5. [Memories-with-lessons MCP Server - A Persistent Tool Based on Knowledge Graph, Supporting Cross-session Memory and Learning from Error Schemes](https://mcp.aibase.com/server/1916334460696948737)\n\n# Memories with Lessons MCP: Knowledge Graph, Entities, Relationships, and Cross-Session Memory\n\n## Core Components\n\n**Entities** are the primary nodes in the knowledge graph, each with:[3]\n- A unique name (identifier)\n- An entity type (e.g., \"person\", \"organization\", \"event\")\n- A list of observations\n\n**Relations** define directed connections between entities, stored in active voice to describe how entities interact.[3]\n\n**Observations** are discrete pieces of information attached to specific entities, stored as atomic facts (one per observation).[3]\n\n**Lessons** are special entities capturing error patterns and solutions, including:[3]\n- Error pattern information (type, message, context)\n- Solution steps and verification\n- Success rate tracking\n- Environmental context and metadata\n\n## Cross-Session Memory\n\nThe system maintains persistent memory across different conversations through local JSON storage (memory.json and lesson.json files) that persists between sessions.[1][2] This enables Claude to remember user details, preferences, and past interactions without cloud dependencies.[1]\n\n## Cursor Integration\n\nThe MCP (Model Context Protocol) integrates seamlessly with the Cursor IDE for developer assistance scenarios.[1][2] Configuration requires adding server settings to the &#96;claude_desktop_config.json&#96; file and setting a system prompt that specifies when and how to use memory.[1][2]\n\n## Key Capabilities\n\nThe server provides API tools for creating entities, relations, observations, and lessons, plus error learning functionality that improves over time with success rate tracking.[1][3][5] This makes it suitable for personalized AI assistants, technical support bots, and applications requiring persistent memory across conversations.[1]",
+      "title": "Web search results for query: \"Memories with Lessons\" MCP knowledge graph entities relationships cursor cross-session"
+    }
+  ],
+  "rejected": false
+}
+```
+User decision: **accepted**
+
+Status: **completed**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch">
+<details>
+<summary>Tool use: **web_fetch**</summary>
+
+
+Parameters:
+
+```json
+{
+  "url": "https://docs.basicmemory.com/reference/technical-information"
+}
+```
+Additional data:
+
+```json
+{
+  "reviewData": {
+    "isShowingInput": false,
+    "selectedOption": "run",
+    "status": "Requested"
+  }
 }
 ```
 Status: **loading**
@@ -52,7 +1469,34 @@ Status: **loading**
 </details>
 </tool-use>
 
-<tool-use data-tool-type="unknown" data-tool-name="task_v2"><details>
-<summary>Tool use: **task_v2**</summary>
+<tool-use data-tool-type="unknown" data-tool-name="web_fetch"><details>
+<summary>Tool use: **web_fetch**</summary>
+
+</details></tool-use>
+
+_**Agent (claude-4.6-opus-max)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search">
+<details>
+<summary>Tool use: **web_search**</summary>
+
+
+Parameters:
+
+```json
+{
+  "searchTerm": "mem0 AI memory layer personal knowledge graph conversation extraction open source 2026"
+}
+```
+User decision: **accepted**
+
+Status: **loading**
+
+
+</details>
+</tool-use>
+
+<tool-use data-tool-type="unknown" data-tool-name="web_search"><details>
+<summary>Tool use: **web_search**</summary>
 
 </details></tool-use>
