@@ -196,4 +196,28 @@ _**Agent (default)**_
 
 ## 怎么区分「自己的 API」和「Cursor 自带通道」
 
-项目里的 `e:\数字\.vscode\settings.json` **没有** Cursor 的模型/API 配
+项目里的 `e:\数字\.vscode\settings.json` **没有** Cursor 的模型/API 配置；这类设置在 **Cursor 应用自身**（用户级），仓库里看不出来，只能在你本机设置里查。
+
+### 1. 最直接：看 Cursor 设置
+
+1. 打开 **Cursor Settings**（`Ctrl + ,` 或菜单里 Cursor → Settings）。
+2. 找到与模型相关的区域（常见名称会随版本变化，大致是 **Models / Features / API Keys** 一类）。
+3. 判断逻辑：
+   - **没有**为 OpenAI / Anthropic / Google 等填入 **API Key**，或未开启「使用自己的 Key」之类选项 → 通常就是 **走 Cursor 订阅/托管**（你付给 Cursor，请求由 Cursor 侧转发）。
+   - **填了 Key 且对该模型启用了自有 Key** → 对应提供商会 **用你的 Key 计费**，请求打到官方 API（若你还改了 Base URL，则打到那个地址）。
+
+可以同时存在「部分模型用 Cursor、部分用 BYOK」，所以要按 **当前选用的那个模型** 看下面是否勾了自有 Key。
+
+### 2. 用「账单侧」交叉验证（可当作测试）
+
+- 在 **OpenAI / Anthropic / 中转商** 控制台看 **最近 API 调用时间** 是否和你在 Cursor 里发消息、跑 Agent 的时间一致。  
+  - 一致 → 很大概率当前这条链路在用 **你的 API**。  
+  - 完全没有新记录 → 更像 **纯 Cursor 通道**（或未走该厂商）。
+
+### 3. 和 Obsidian / N8N 无关
+
+仓库里 Obsidian Copilot、N8N 的 `OPENAI_API_KEY` 等只影响那些工具，**不能**用来推断 Cursor 当前用的是哪条路。
+
+---
+
+**你的意思**是：想确认 **Cursor 里聊天/Agent 这一层** 用的是你自己配的 Key，还是 Cursor 订阅自带，对吗？若你贴一张 **Models / API Keys 相关设置页** 的截图（可打码 Key），我可以按界面帮你逐项对上结论。

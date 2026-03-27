@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "chroma": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "chroma-mcp",
+        "--client-type", "persistent",
+        "--data-dir", "E:/数字/knowledge_base_v2/vector_store"
+      ]
+    }
+  }
+}
