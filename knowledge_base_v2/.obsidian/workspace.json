@@ -27,8 +27,8 @@
             "state": {
               "type": "smart-release-notes-view",
               "state": {},
-              "icon": "file-text",
-              "title": "Release Notes"
+              "icon": "lucide-ghost",
+              "title": "smart-release-notes-view"
             }
           },
           {
@@ -37,12 +37,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "B38-懂用户到胜率的价值链.md",
+                "file": "A14-用户想在幕后策划不想应酬.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "B38-懂用户到胜率的价值链"
+              "title": "A14-用户想在幕后策划不想应酬"
             }
           }
         ],
@@ -231,6 +231,11 @@
   },
   "active": "ff06e80f72e5b1b8",
   "lastOpenFiles": [
+    "vector_store/4ba27e6a-9669-4562-ab3d-9d62d8ebfdb0",
+    "list_collections.py",
+    "vector_store/22d9b037-639f-47ab-89e5-615b73a677e6",
+    "vector_store/chroma.sqlite3-journal",
+    "B38-懂用户到胜率的价值链.md",
     "P5-北京院士秘书.md",
     "P4-薄语.md",
     "P3-张梦凡.md",
@@ -241,8 +246,6 @@
     "M3-数据不足时拒绝牵强自洽.md",
     "A13-押注AI共生是战略选择.md",
     "test_query.py",
-    "vector_store/4ba27e6a-9669-4562-ab3d-9d62d8ebfdb0",
-    "vector_store/chroma.sqlite3-journal",
     "import_to_chroma.py",
     "vector_store/chroma.sqlite3",
     "vector_store",
@@ -260,8 +263,6 @@
     "V15-B2-知识库核心断裂.md",
     "V15-B1-多领域是喂料问题.md",
     "B32-平庸的生产机制.md",
-    "A12-被迫的角色膨胀.md",
-    "B45-AI判断质量结构性衰减.md",
-    "B46-用户发明认知工具是补偿.md"
+    "A12-被迫的角色膨胀.md"
   ]
 }

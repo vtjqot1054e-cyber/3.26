@@ -2,11 +2,12 @@
   "mcpServers": {
     "chroma": {
       "type": "stdio",
-      "command": "uvx",
+      "command": "C:\\Users\\乐迪\\.local\\bin\\chroma-mcp.exe",
       "args": [
-        "chroma-mcp",
-        "--client-type", "persistent",
-        "--data-dir", "E:/数字/knowledge_base_v2/vector_store"
+        "--client-type",
+        "persistent",
+        "--data-dir",
+        "E:/家里2/3.26/knowledge_base_v2/vector_store"
       ]
     }
   }

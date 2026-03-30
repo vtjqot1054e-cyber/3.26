@@ -1,0 +1,8 @@
+# CUDA环境变量设置
+# 复制下面全部内容到管理员PowerShell执行
+
+[System.Environment]::SetEnvironmentVariable("Path", [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";E:\CUDA\v12.1\bin", "Machine")
+
+[System.Environment]::SetEnvironmentVariable("CUDA_PATH", "E:\CUDA\v12.1", "Machine")
+
+Write-Host "完成！请关闭PowerShell重新打开验证"
