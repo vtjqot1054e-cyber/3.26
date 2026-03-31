@@ -163,21 +163,26 @@
 
 ## 七、路径信息
 
-| | 公司 | 家里 |
+> 相对路径以**仓库根**为基准；仅盘符与根文件夹名因机器而异。
+
+| | 公司 | 家里（当前正本，与 Git 一致） |
 |--|------|------|
-| 仓库根目录（Cursor项目） | `D:\数字分身2\` | `E:\----2\` |
-| OB Vault | `D:\数字分身2\vault\` | `E:\----2\vault\` |
+| 仓库根目录（Cursor 打开此文件夹） | `D:\数字分身2\` | `E:\数字\` |
+| OB Vault（含 `.obsidian` 的库根） | `D:\数字分身2\vault\` | `E:\数字\vault\` |
 | 核心数据 | `vault\数字分身\` | `vault\数字分身\` |
-| 知识库 | `vault\knowledge_base\` | `vault\knowledge_base\` |
+| 知识库（旧，层1） | `vault\knowledge_base\` | `vault\knowledge_base\` |
+| 知识库 v2（OB 独立库，与根并列） | `D:\数字分身2\knowledge_base_v2\` | `E:\数字\knowledge_base_v2\` |
 | N8N | Docker 容器 | `E:\n8n`（npm v2.11.4） |
 | GitHub凭据ID | WOlJySe4SrMi2j4Z | Kf75WOcgOMq0cpks |
+
+**公司机拉仓后（N8N）**：根目录 `N8N\01-A对话清洗标注.json`、`03-用户校对归档.json` 内默认为家里路径 `E:\数字\`，导入公司 Docker 前请全局替换为 `D:\数字分身2\`（与 `02-用户校对提炼.json` 一致）。详见 `N8N/公司机同步说明.md`。
 
 ---
 
 ## 八、项目结构
 
 ```
-D:\数字分身2\（唯一Cursor项目）
+<仓库根>/（公司多为 D:\数字分身2\，家里当前为 E:\数字\）
 ├── CLAUDE.md                    ← 本文件（元宪法）
 ├── .cursor/
 │   ├── skills/                  ← 所有SK集中管理
@@ -210,6 +215,7 @@ D:\数字分身2\（唯一Cursor项目）
 │   │   └── scripts/             ← 管理脚本
 │   └── .obsidian/
 │
+├── knowledge_base_v2/           ← 知识库 v2（与 vault 并列）
 ├── N8N/                         ← 工作流
 └── .specstory/
 ```

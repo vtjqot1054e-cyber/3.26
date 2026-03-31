@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const vaultPath = 'E:\\----2\\vault\\数字分身';
+const vaultPath = 'E:\\数字\\vault\\数字分身';
 const pendingDir = path.join(vaultPath, '待确认');
 const archiveDir = path.join(vaultPath, '对话存档');
 const deletedDir = path.join(vaultPath, '对话删除');
